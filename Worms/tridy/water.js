@@ -1,0 +1,21 @@
+class Water{
+    constructor(){
+    }
+   
+    waterGo(){
+    setTimeout(() => {
+        if(water<canvasHeigh/2.8){
+            water+=10;
+
+            this.waterGo();
+        }
+        else{
+            
+        }
+    }, 300/2);
+ }
+ show(){
+    fill('blue');
+    image(waterImg,0, 420-water, 1600, 720);
+ }
+}

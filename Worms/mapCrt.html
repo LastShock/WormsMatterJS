@@ -111,7 +111,13 @@ function handleDrag() {
         circle = d3.select(circles[0][i]);
         newPoints.push([circle.attr('cx'), circle.attr('cy')]);
     }
+    
     poly.attr('points', newPoints);
+    for(let random=0; random<points.length;random++){
+        console.log(newPoints[random]);
+        value += Math.trunc(newPoints[random][0]) + ","+ Math.trunc(newPoints[random][1]) +","
+    }
+    document.getElementById('textarea').value = value;
 
 }
 

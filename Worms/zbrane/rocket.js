@@ -1,7 +1,7 @@
-class Granat{
+class Rocket{
 
     constructor(idWorma,x,y) {
-        this.name= "granat"
+        this.name= "Rocket";
 
         this.idWorm= idWorma;
         this.granatX= x+15;
@@ -31,19 +31,16 @@ class Granat{
         if(this.throw==false){
             push();
             fill('rgb(240,230,140)');
-            image(imgGr,wormove[this.idWorm].body.position.x+15 ,wormove[this.idWorm].body.position.y-20, this.r+10,this.r+10);
+            image(imgRedGr,wormove[this.idWorm].body.position.x+15 ,wormove[this.idWorm].body.position.y-20, this.r+10,this.r+10);
             pop();  
         }
         else if(this.throw==true&&this.bodyCreated==false){
-            console.log(wormove[this.idWorm].position)
             this.bodyCreated=true;
-            this.bodyWeap= Matter.Bodies.circle(wormove[this.idWorm].body.position.x+15 ,wormove[this.idWorm].body.position.y-20,this.r/2-9);
+            this.bodyWeap= Matter.Bodies.circle(wormove[this.idWorm].body.position.x+15 ,wormove[this.idWorm].body.position.y-20,this.r/2+10);
+            this.bodyWeap.mass = 200;
+            this.bodyWeap.restitution= 0.7;
 
-            
             Matter.World.add(world,this.bodyWeap);
-            this.bodyWeap.mass = 500;
-            this.bodyWeap.restitution= 0.4;
-
 
             this.slingshot = new SlingShot(wormove[this.idWorm].body.position.x+15 ,wormove[this.idWorm].body.position.y-46, this.bodyWeap);
 
@@ -58,12 +55,12 @@ class Granat{
 
         }
         else if(this.throw==true&&this.bodyCreated==true){
-            this.slingshot.show();
             Matter.Body.setPosition(wormove[this.idWorm].body, wormove[this.idWorm].position)
 
+            this.slingshot.show();
             push();
             fill('rgb(240,230,140)');
-            image(imgGr,this.bodyWeap.position.x-10 ,this.bodyWeap.position.y-5, this.r+10,this.r+10);
+            image(imgRedGr,this.bodyWeap.position.x-10 ,this.bodyWeap.position.y-5, this.r+10,this.r+10);
             pop();  
             if(this.grnInAir==true){
                 Body.applyForce( this.bodyWeap, {x: this.bodyWeap.position.x, y: this.bodyWeap.position.y}, {x: wind, y:0});
@@ -78,13 +75,12 @@ class Granat{
                         var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
 
                         if(collision.collided){
-                            this.grnInAir=false;
+                            this.explode(this.idWorm)
                         }
                     }
                 }
             }
-            
-            
+
             let position=this.bodyWeap.position;
             if(position.x>1900 || position.x<0 || position.y>800 || position.y<-200){
                 Matter.Composite.remove(world, this.bodyWeap)
@@ -104,22 +100,17 @@ class Granat{
             wormove[this.idWorm].SwapWorm(this.idWorm);
         }
     }
-
     explode(idWorm){
-        let dmgGiven=false;
-
-        let positionGranat= this.bodyWeap.position;
-
-        
+        console.log(wormove[idWorm].weapon)
         wormove[idWorm].weapon.bodyCreated= false;
         wormove[idWorm].weapon.throw=false;
         wormove[idWorm].weapon.inAir=false;
         wormove[idWorm].SwapWorm(idWorm);
-
         Matter.Composite.remove(world, wormove[idWorm].weapon.bodyWeap)
 
-        let radius = 150;
+        let radius = 100;
 
+        let positionGranat= this.bodyWeap.position;
 
 
         for(let i = 0;i<wormove.length;i++){
@@ -127,54 +118,42 @@ class Granat{
             let arg2=(wormove[i].body.position.y-positionGranat.y)*(wormove[i].body.position.y-positionGranat.y);
             let isInside=Math.sqrt(arg1+arg2);
 
+            let random;
             if(isInside<= radius){
-                if(positionGranat.x>wormove[i].body.position.x&&dmgGiven==false){
+                if(positionGranat.x>wormove[i].body.position.x){
                     let random=1-(positionGranat.x-wormove[i].body.position.x)/radius;
-                    Body.applyForce( wormove[i].body, {x: wormove[i].body.position.x, y: wormove[i].body.position.y}, {x: -100*random, y:-300*random});
+                   
+                    Body.applyForce( wormove[i].body, {x: wormove[i].body.position.x, y: wormove[i].body.position.y}, {x: -100.0*random, y:-300.5});
                     let dmg= random*30;
                     dmg = Math.trunc(dmg)
                     wormove[i].hp-=dmg;
-                    dmgGiven=true;
                    
                 }
-                else if(positionGranat.x<wormove[i].body.position.x&&dmgGiven==false){
-                    let random=1+(positionGranat.x-wormove[i].body.position.x)/radius;
-                    Body.applyForce( wormove[i].body, {x: wormove[i].body.position.x, y: wormove[i].body.position.y}, {x: 100*random, y:-300*random});
-                    let dmg= random*30 ;
+                else if(positionGranat.x<wormove[i].body.position.x){
+                    let random=1+(positionGranat.x-(-wormove[i].body.position.x))/radius;
+                    Body.applyForce( wormove[i].body, {x: wormove[i].body.position.x, y: wormove[i].body.position.y}, {x: 100.0*random, y:-300.5});
+                    let dmg= random*30;
+
+                    console.log(wormove[i])
+
+                    console.log(dmg)
                     dmg = Math.trunc(dmg)
                     wormove[i].hp-=dmg;
-                    dmgGiven=true;
-
 
                 }   
                 
 
             }
-            
 
         }
-        for(let mapPiece= 0;mapPiece<map.length;mapPiece++){
-            if(map[mapPiece]!=null){
-                
-                var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
-
-                if(collision.collided){
-                    random.destroy(map[mapPiece],positionGranat.x,positionGranat.y)
-
-                }
-            }
-        }
-       
         
 
     }
     removeBody(idWorm){
-        if(this.bodyCreated==true){
-            wormove[idWorm].weapon.bodyCreated= false;
-            wormove[idWorm].weapon.throw=false;
-            wormove[idWorm].weapon.inAir=false;
-            Matter.Composite.remove(world, wormove[idWorm].weapon.bodyWeap)
-        }
+        wormove[idWorm].weapon.bodyCreated= false;
+        wormove[idWorm].weapon.throw=false;
+        wormove[idWorm].weapon.inAir=false;
+        Matter.Composite.remove(world, wormove[idWorm].weapon.bodyWeap)
     }
     checkTime(idWorm){
         for(let mapPiece= 0;mapPiece<map.length;mapPiece++){
@@ -198,59 +177,4 @@ class Granat{
         }
 }
    
-}
-function mouseReleased(){
-    for(let i=0;i<wormove.length;i++){
-        if(wormove[i].playing==true){
-
-            if(wormove[i].weapon.isInside==true){
-
-                setTimeout(() => {
-                    wormove[i].weapon.slingshot.detach()
-                }, 10);
-
-                setTimeout(() => {
-                    mouseDis==false;
-                }, 500);
-                if(wormove[i].weapon.name=="granat"){
-                    setTimeout(() => {
-                        wormove[i].weapon.explode(i)
-                    }, 2500);
-                }
-                else if(wormove[i].weapon.name="Rocket"){
-                    wormove[i].weapon.inAir=true;
-                    wormove[i].weapon.grnInAir=true;
-
-                }
-                
-
-                setTimeout(() => {
-                    wormove[i].weapon.inAir=true;
-                    wormove[i].weapon.grnInAir=true;
-                }, 200);
-
-                wormove[i].isInside=false;
-
-                wormove[i].weapon.mouse==null;
-                Matter.Composite.remove(world,wormove[i].weapon.mConstraint)
-            }
-            
-        }
-    }
-}
-function mousePressed() {
-    for(let i=0;i<wormove.length;i++){
-        if(wormove[i].playing==true&&wormove[i].weapon.bodyCreated==true){
-            let positonMouse= wormove[i].weapon.mouse.position;
-
-
-            let positionGranat= wormove[i].weapon.bodyWeap.position;
-            let arg1=(positionGranat.x-positonMouse.x)*(positionGranat.x-positonMouse.x);
-            let arg2=(positionGranat.y-positonMouse.y)*(positionGranat.y-positonMouse.y);
-            let isInside=Math.sqrt(arg1+arg2);
-            if(isInside<50){
-                wormove[i].weapon.isInside=true;
-            }
-        }
-    }
 }

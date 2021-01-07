@@ -1,60 +1,111 @@
-class Union{
+class Destroy{
     constructor() {
-        const POLYGONY = [
-        ];
-        let indexPoly=0;
-        for(let u=0;u<map.length;u++){
-            let index=0;
-            const POLYGON = [
-            ];
-            for(let i=1; i<map[u].body.parts.length;i++){
-                for(let r=0;r<map[u].body.parts[i].vertices.length;r++){
-                    POLYGON[index]=[Math.trunc(map[u].body.parts[i].vertices[r].x),Math.trunc(map[u].body.parts[i].vertices[r].y)]
-                    index++;
-                }
-            }
-            POLYGONY[indexPoly]= POLYGON;
-            indexPoly++;
+     this.hole=  [
+        [500,291],
+        [491,278],
+        [483,265],
+        [481,251],
+        [482,229],
+        [489,218],
+        [506,198],
+        [516,193],
+        [532,186],
+        [559,176],
+        [572,176],
+        [584,177],
+        [606,185],
+        [618,195],
+        [631,218],
+        [637,232],
+        [640,260],
+        [636,273],
+        [625,293],
+        [599,319],
+        [556,327],
+        [528,321]
+        ]
+        /*this.hole=[
+            [516,172],
+            [508,164],
+            [500,150],
+            [500,140],
+            [500,135],
+            [501,128],
+            [505,120],
+            [512,115],
+            [524,105],
+            [538,104],
+            [550,103],
+            [561,107],
+            [566,118],
+            [574,131],
+            [576,145],
+            [578,161],
+            [578,170],
+            [546,188],
+            [532,190],
+            [520,184]
+        ]*/
+        let random="";
+        for(let i =0;i<this.hole.length;i++){
+            random+=this.hole[i][0]+","+this.hole[i][1]+","
         }
-        map1 = PolygonTools.polygon.union(POLYGONY[0], POLYGONY[1],POLYGONY[2],POLYGONY[3],POLYGONY[4]);
+        let verticies1 = Matter.Vertices.fromPath(random);
+        this.souradnice = verticies1;
+        this.body = Matter.Bodies.fromVertices(-500, -10000, this.souradnice);
+        this.body.isStatic=true;
+        Matter.World.add(world, this.body);
+
+    }
+    destroy(polygon, explosionX, explosionY){
+        Matter.Composite.remove(world, this.body)
+
+        let random="";
+        for(let i =0;i<this.hole.length;i++){
+            random+=this.hole[i][0]+","+this.hole[i][1]+","
+        }
+        let verticies1 = Matter.Vertices.fromPath(random);
+        this.souradnice = verticies1;
+        this.body = Matter.Bodies.fromVertices(explosionX,  explosionY, this.souradnice);
+        this.body.isStatic=true;
+        this.body.isSensor=true;
+        Matter.World.add(world, this.body);
+
+        var  polygomClass = []
+        for(let i = 0;i < polygon.souradnice.length;i++){
+            polygomClass[i]= [polygon.souradnice[i].x,polygon.souradnice[i].y]
+        }
+        var polygonBoom = []
+        for(let i = 0;i < this.souradnice.length;i++){
+            polygonBoom[i]= [this.souradnice[i].x,this.souradnice[i].y]
+        }
+        let triangles = PolygonTools.polygon.subtract(polygomClass,polygonBoom);
+        Matter.Composite.remove(world, polygon.body)
+        let path="";
+        for(let i =0;i<triangles[0].length;i++){
+            path+=triangles[0][i][0]+","+triangles[0][i][1]+","
+        }
+        let id=polygon.id
+        map[polygon.id]=new Map(path, polygon.x,polygon.y)
+        map[polygon.id].id=id
 
 
-        for(let i=0;i<POLYGONY.length;i++){
-            let verticies='';
-            map[i].body= null;
+        Matter.Composite.remove(world, this.body)
 
-            for(let indexPolygonu=0;indexPolygonu<POLYGONY[i].length;indexPolygonu++){
-                if(indexPolygonu+1==POLYGONY[i].length){
-                    verticies+=POLYGONY[i][indexPolygonu]
-                }
-                else{
-                    verticies+=POLYGONY[i][indexPolygonu] +","
 
-                }
 
+
+    }
+    showVerticies(){
+        let randomPath="";
+        for(let i=0; i<this.body.parts.length;i++){
+            for(let r=0;r<this.body.parts[i].vertices.length;r++){
+                randomPath+=this.body.parts[i].vertices[r].x+ " ,"+ this.body.parts[i].vertices[r].y +  ",";
             }
-            console.log(verticies);
-
-            if(i==0){
-                map[i]= new Map(verticies,400,400)
-            }
-            else if(i==1){
-                map[i]= new Map(verticies,200,700)
-            }
-            else if(i==2){
-                map[i]= new Map(verticies,1300,600)
-
-
-            }
-            else if(i==3){
-                map[i]= new Map(verticies,0,500)
-            }
-            else if(i==4){
-                map[i]= new Map(verticies,500,500)
-            }
-            console.log(map);
-            console.log(world.bodies)
         }
 
+    }
+    show(){
+        
     }
 }
