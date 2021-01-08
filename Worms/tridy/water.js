@@ -1,25 +1,25 @@
-class Water{
-    constructor(){
+class Water {
+    constructor() {
     }
-   
-    waterGo(){
-        for(let i = 0 ;i<10; i++){
-                
-        water+=1;
+
+    waterGo() {
+        for (let i = 0; i < 10; i++) {
+
+            water += 1;
         }
         setTimeout(() => {
-            if(water<canvasHeigh/2.8){
-                
+            if (water < canvasHeigh / 2.8) {
+
 
                 this.waterGo();
             }
-            else{
-                
+            else {
+
             }
-        }, 300/2);
- }
- show(){
-    fill('blue');
-    image(waterImg,0, 420-water, 1600, 720);
- }
+        }, 300 / 2);
+    }
+    show() {
+        fill('blue');
+        image(waterImg, 0, 420 - water, 1600, 720);
+    }
 }
