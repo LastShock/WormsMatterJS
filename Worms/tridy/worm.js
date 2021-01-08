@@ -6,6 +6,8 @@ class Worm{
         this.height=15;
         this.idFPl= wormove.length;
         this.position;
+        this.animaceWorma=true;
+        this.animace=60;
 
         this.team=team;
         this.alive= true;
@@ -33,7 +35,7 @@ class Worm{
         let play= this.playing;
         let attack= this.attack;
         let thisObject= this;
-            
+        let animace = this.animace;            
         
         this.checkTime(id);
         
@@ -68,13 +70,24 @@ class Worm{
                     }
     
                     else if (e.keyCode == '37') {
-                        Body.setPosition(worm,{x: worm.position.x-2, y: worm.position.y-1})
-                        animaceWorma=!animaceWorma;
-    
+                        Body.setPosition(worm,{x: worm.position.x-2, y: worm.position.y})
+                        animace++;
+                        if(animace>60){
+                            animace=0;
+                            thisObject.animaceWorma=!thisObject.animaceWorma
+                        }
                     }
                     else if (e.keyCode == '39') {   //walk
-                        Body.setPosition(worm,{x: worm.position.x+2, y: worm.position.y-1})
-                        animaceWorma=!animaceWorma;
+                        Body.setPosition(worm,{x: worm.position.x+2, y: worm.position.y})
+                        animace++
+
+                        if(animace>60){
+                            animace=0;
+                            thisObject.animaceWorma=!thisObject.animaceWorma
+                        }
+                      
+
+
 
                     }
                     else if(e.keyCode=='67'){   //jump
@@ -208,13 +221,13 @@ class Worm{
             this.showHP();
             push()
             fill('rgb(240,230,140)');
-            if(animaceWorma==true){
-                image(imgWorm,pos.x,pos.y-25, this.width+20, this.height+15);
+            if(this.animaceWorma==true){
+                image(imgWorm,pos.x,pos.y-23, this.width+20, this.height+15);
 
             }
-            else if(animaceWorma==false) {
+            else if(this.animaceWorma==false) {
 
-                image(imgWorm2,pos.x,pos.y-25, this.width+20, this.height+15);
+                image(imgWorm2,pos.x,pos.y-23, this.width+20, this.height+15);
 
             }
             pop();
@@ -266,8 +279,10 @@ class Worm{
                     var collision = Matter.SAT.collides(map[mapPiece].body, this.body)
                     if(collision.collided){
                         time2= new Date();
-        
-                        if(swapTime+ time1.getSeconds()>60){
+                        console.log(((swapTime+ time1.getSeconds())-60))
+                        console.log(time2.getSeconds())
+
+                        if(swapTime+ time1.getSeconds()>59||swapTime+ time1.getSeconds()==0){
                             if(((swapTime+ time1.getSeconds())-60)==time2.getSeconds()){
                                 this.SwapWorm(idWorm);
                             }

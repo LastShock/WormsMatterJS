@@ -39,10 +39,13 @@ class Map{
         push();
         beginShape();
         fill('rgb(0,255,0)');
-        stroke('rgb(0,255,0)');
+        stroke('brown');
+        strokeWeight(2)
         for(let i =0;i<this.souradnice.length;i++){
             vertex(this.souradnice[i].x+this.P5x, this.souradnice[i].y+this.P5y); 
         }
+        vertex(this.souradnice[0].x+this.P5x, this.souradnice[0].y+this.P5y); 
+
         endShape();
         pop();
     }

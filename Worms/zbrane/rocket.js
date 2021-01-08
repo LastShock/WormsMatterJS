@@ -100,17 +100,21 @@ class Rocket{
             wormove[this.idWorm].SwapWorm(this.idWorm);
         }
     }
+    
     explode(idWorm){
-        console.log(wormove[idWorm].weapon)
+
+        let positionGranat= this.bodyWeap.position;
+
+        
         wormove[idWorm].weapon.bodyCreated= false;
         wormove[idWorm].weapon.throw=false;
         wormove[idWorm].weapon.inAir=false;
         wormove[idWorm].SwapWorm(idWorm);
+
         Matter.Composite.remove(world, wormove[idWorm].weapon.bodyWeap)
 
-        let radius = 100;
+        let radius = 150;
 
-        let positionGranat= this.bodyWeap.position;
 
 
         for(let i = 0;i<wormove.length;i++){
@@ -118,34 +122,45 @@ class Rocket{
             let arg2=(wormove[i].body.position.y-positionGranat.y)*(wormove[i].body.position.y-positionGranat.y);
             let isInside=Math.sqrt(arg1+arg2);
 
-            let random;
             if(isInside<= radius){
                 if(positionGranat.x>wormove[i].body.position.x){
                     let random=1-(positionGranat.x-wormove[i].body.position.x)/radius;
-                   
-                    Body.applyForce( wormove[i].body, {x: wormove[i].body.position.x, y: wormove[i].body.position.y}, {x: -100.0*random, y:-300.5});
+                    Body.applyForce( wormove[i].body, {x: wormove[i].body.position.x, y: wormove[i].body.position.y}, {x: -100*random, y:-300*random});
                     let dmg= random*30;
                     dmg = Math.trunc(dmg)
                     wormove[i].hp-=dmg;
                    
                 }
                 else if(positionGranat.x<wormove[i].body.position.x){
-                    let random=1+(positionGranat.x-(-wormove[i].body.position.x))/radius;
-                    Body.applyForce( wormove[i].body, {x: wormove[i].body.position.x, y: wormove[i].body.position.y}, {x: 100.0*random, y:-300.5});
-                    let dmg= random*30;
-
-                    console.log(wormove[i])
-
-                    console.log(dmg)
+                    let random=1+(positionGranat.x-wormove[i].body.position.x)/radius;
+                    Body.applyForce( wormove[i].body, {x: wormove[i].body.position.x, y: wormove[i].body.position.y}, {x: 100*random, y:-300*random});
+                    let dmg= random*30 ;
                     dmg = Math.trunc(dmg)
                     wormove[i].hp-=dmg;
+
 
                 }   
                 
 
             }
+            
 
         }
+        if(destructionOn==true){
+            for(let mapPiece= 0;mapPiece<map.length;mapPiece++){
+                if(map[mapPiece]!=null){
+                    
+                    var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
+    
+                    if(collision.collided){
+                        random.destroy(map[mapPiece],positionGranat.x,positionGranat.y)
+    
+                    }
+                }
+            }
+           
+        }
+        
         
 
     }

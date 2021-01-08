@@ -3,16 +3,20 @@ class Water{
     }
    
     waterGo(){
-    setTimeout(() => {
-        if(water<canvasHeigh/2.8){
-            water+=10;
+        for(let i = 0 ;i<10; i++){
+                
+        water+=1;
+        }
+        setTimeout(() => {
+            if(water<canvasHeigh/2.8){
+                
 
-            this.waterGo();
-        }
-        else{
-            
-        }
-    }, 300/2);
+                this.waterGo();
+            }
+            else{
+                
+            }
+        }, 300/2);
  }
  show(){
     fill('blue');

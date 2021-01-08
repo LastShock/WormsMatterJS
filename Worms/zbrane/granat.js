@@ -35,7 +35,6 @@ class Granat{
             pop();  
         }
         else if(this.throw==true&&this.bodyCreated==false){
-            console.log(wormove[this.idWorm].position)
             this.bodyCreated=true;
             this.bodyWeap= Matter.Bodies.circle(wormove[this.idWorm].body.position.x+15 ,wormove[this.idWorm].body.position.y-20,this.r/2-9);
 
@@ -80,6 +79,7 @@ class Granat{
                         if(collision.collided){
                             this.grnInAir=false;
                         }
+                        
                     }
                 }
             }
@@ -106,7 +106,6 @@ class Granat{
     }
 
     explode(idWorm){
-        let dmgGiven=false;
 
         let positionGranat= this.bodyWeap.position;
 
@@ -128,22 +127,20 @@ class Granat{
             let isInside=Math.sqrt(arg1+arg2);
 
             if(isInside<= radius){
-                if(positionGranat.x>wormove[i].body.position.x&&dmgGiven==false){
+                if(positionGranat.x>wormove[i].body.position.x){
                     let random=1-(positionGranat.x-wormove[i].body.position.x)/radius;
                     Body.applyForce( wormove[i].body, {x: wormove[i].body.position.x, y: wormove[i].body.position.y}, {x: -100*random, y:-300*random});
                     let dmg= random*30;
                     dmg = Math.trunc(dmg)
                     wormove[i].hp-=dmg;
-                    dmgGiven=true;
                    
                 }
-                else if(positionGranat.x<wormove[i].body.position.x&&dmgGiven==false){
+                else if(positionGranat.x<wormove[i].body.position.x){
                     let random=1+(positionGranat.x-wormove[i].body.position.x)/radius;
                     Body.applyForce( wormove[i].body, {x: wormove[i].body.position.x, y: wormove[i].body.position.y}, {x: 100*random, y:-300*random});
                     let dmg= random*30 ;
                     dmg = Math.trunc(dmg)
                     wormove[i].hp-=dmg;
-                    dmgGiven=true;
 
 
                 }   
@@ -153,18 +150,21 @@ class Granat{
             
 
         }
-        for(let mapPiece= 0;mapPiece<map.length;mapPiece++){
-            if(map[mapPiece]!=null){
-                
-                var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
-
-                if(collision.collided){
-                    random.destroy(map[mapPiece],positionGranat.x,positionGranat.y)
-
+        if(destructionOn==true){
+            for(let mapPiece= 0;mapPiece<map.length;mapPiece++){
+                if(map[mapPiece]!=null){
+                    
+                    var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
+    
+                    if(collision.collided){
+                        random.destroy(map[mapPiece],positionGranat.x,positionGranat.y)
+    
+                    }
                 }
             }
+           
         }
-       
+        
         
 
     }
