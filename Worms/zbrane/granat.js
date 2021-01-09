@@ -116,6 +116,8 @@ class Granat {
     }
 
     explode(idWorm) {
+       
+        audio.play();
 
         this.exploded = true;
         this.explosionX = this.bodyWeap.position.x;
@@ -224,6 +226,10 @@ class Granat {
 function mouseReleased() {
     if (mouseUse == false){
         mouseUse= true;
+        setTimeout(() => {
+           mouseUse = false
+        }, 2500);
+        
         for (let i = 0; i < wormove.length; i++) {
             if (wormove[i].playing == true) {
     
@@ -238,12 +244,15 @@ function mouseReleased() {
                     }, 500);
                     if (wormove[i].weapon.name == "granat") {
                         setTimeout(() => {
-                            wormove[i].weapon.explode(i)
+                            wormove[i].weapon.explode(i);
                         }, 2500);
                     }
                     else if (wormove[i].weapon.name = "Rocket") {
-                        wormove[i].weapon.inAir = true;
-                        wormove[i].weapon.grnInAir = true;
+                        setTimeout(() => {
+                            wormove[i].weapon.inAir = true;
+                            wormove[i].weapon.grnInAir = true;
+                        }, 200);
+                        
     
                     }
     

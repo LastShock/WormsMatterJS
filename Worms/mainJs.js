@@ -18,6 +18,9 @@ let cas;
 let time1 = new Date();
 let time2 = new Date();
 
+var audio = new Audio('/sounds/granade.mp3');
+audio.volume=0.1;
+
 let canvas;
 let canvasWidth = 1520;
 let canvasHeigh = 720;
@@ -94,7 +97,6 @@ function draw() {
 
     Matter.Engine.update(engine);
     background(bg);
-    //wormove.forEach(worm => worm.weapon.show())
 
     for (let i = 0; i < wormove.length; i++) {
         if (wormove[i].weapon.exploded == true) {

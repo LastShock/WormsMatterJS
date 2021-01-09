@@ -37,8 +37,8 @@ class Rocket {
         else if (this.throw == true && this.bodyCreated == false) {
             this.bodyCreated = true;
             this.bodyWeap = Matter.Bodies.circle(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 20, this.r / 2 + 10);
-            this.bodyWeap.mass = 200;
-            this.bodyWeap.restitution = 0.7;
+            this.bodyWeap.mass = 500;
+            this.bodyWeap.restitution = 0.4;
 
             Matter.World.add(world, this.bodyWeap);
 
@@ -101,7 +101,6 @@ class Rocket {
         }
     }
     showExplosion() {
-        console.log("asdadsa")
         push();
         fill('rgb(240,230,140)');
         image(imgExplosion, this.explosionX - 25, this.explosionY - 25, 50, 50);
@@ -109,6 +108,8 @@ class Rocket {
     }
 
     explode(idWorm) {
+        
+        audio.play();
         
         this.exploded = true;
         this.explosionX = this.bodyWeap.position.x;
