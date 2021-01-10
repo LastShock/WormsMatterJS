@@ -28,7 +28,7 @@ class Granat {
     }
 
     show() {
-        frameRate(144);
+        frameRate(60);
 
         if (this.throw == false) {
             push();

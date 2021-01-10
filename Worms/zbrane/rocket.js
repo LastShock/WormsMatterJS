@@ -26,7 +26,7 @@ class Rocket {
     }
 
     show() {
-        frameRate(144);
+        frameRate(60);
 
         if (this.throw == false) {
             push();
@@ -76,6 +76,7 @@ class Rocket {
             if (this.inAir == true) {
                 for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
                     if (map[mapPiece] != null) {
+                        Body.setVelocity(this.bodyWeap, {x: 0, y:0});
 
                         var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
 

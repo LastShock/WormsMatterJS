@@ -108,12 +108,13 @@ function draw() {
             wormove[i].weapon.show();
         }
     }
+    
+    wormove.forEach(worm => worm.show())
     for (let i = 0; i < map.length; i++) {
         if (map[i] != null) {
             map[i].show();
         }
     }
-    wormove.forEach(worm => worm.show())
     waterClass.show();
 
 
