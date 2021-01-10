@@ -31,7 +31,12 @@ class Rocket {
         if (this.throw == false) {
             push();
             fill('rgb(240,230,140)');
-            image(imgRedGr, wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 20, this.r + 10, this.r + 10);
+            if (wormove[this.idWorm].walkingDirection == 0) {
+                image(imgRedGr, wormove[this.idWorm].body.position.x + 17, wormove[this.idWorm].body.position.y - 23, this.r + 10, this.r + 10);
+            }
+            else if (wormove[this.idWorm].walkingDirection == 1) {
+                image(imgRedGr, wormove[this.idWorm].body.position.x - 5, wormove[this.idWorm].body.position.y - 23, this.r + 10, this.r + 10);
+            }
             pop();
         }
         else if (this.throw == true && this.bodyCreated == false) {

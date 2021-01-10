@@ -7,7 +7,8 @@ class Worm {
         this.idFPl = wormove.length;
         this.position;
         this.animaceWorma = true;
-        this.animace = 60;
+        this.animace = 0;
+        this.walkingDirection = 0;
 
         this.team = team;
         this.alive = true;
@@ -35,8 +36,6 @@ class Worm {
         let play = this.playing;
         let attack = this.attack;
         let thisObject = this;
-        let animace = this.animace;
-
         this.checkTime(id);
 
         document.onkeydown = checkKey;
@@ -68,27 +67,24 @@ class Worm {
 
 
                 }
-
-                else if (e.keyCode == '37') {
+                else if (e.keyCode == '37') {   //walk
                     Body.setPosition(worm, { x: worm.position.x - 2, y: worm.position.y })
-                    animace++;
-                    if (animace > 60) {
-                        animace = 0;
+                    thisObject.animace++;
+                    thisObject.walkingDirection = 0;
+
+                    if (thisObject.animace == 4) {
                         thisObject.animaceWorma = !thisObject.animaceWorma
+                        thisObject.animace = 0;
                     }
                 }
-                else if (e.keyCode == '39') {   //walk
+                else if (e.keyCode == '39') {
                     Body.setPosition(worm, { x: worm.position.x + 2, y: worm.position.y })
-                    animace++
-
-                    if (animace > 60) {
-                        animace = 0;
+                    thisObject.walkingDirection = 1;
+                    thisObject.animace++
+                    if (thisObject.animace == 4) {
                         thisObject.animaceWorma = !thisObject.animaceWorma
+                        thisObject.animace = 0;
                     }
-
-
-
-
                 }
                 else if (e.keyCode == '67') {   //jump
                     for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
@@ -219,15 +215,26 @@ class Worm {
             this.showHP();
             push()
             fill('rgb(240,230,140)');
-            if (this.animaceWorma == true) {
-                image(imgWorm, pos.x, pos.y - 23, this.width + 20, this.height + 15);
+            if (this.walkingDirection == 0) {
+                if (this.animaceWorma == true) {
+                    image(imgWormLeft, pos.x, pos.y - 23, this.width + 20, this.height + 15);
 
+                }
+                else if (this.animaceWorma == false) {
+
+                    image(imgWormLeft2, pos.x, pos.y - 23, this.width + 20, this.height + 15);
+
+                }
             }
-            else if (this.animaceWorma == false) {
-
-                image(imgWorm2, pos.x, pos.y - 23, this.width + 20, this.height + 15);
-
+            else if (this.walkingDirection == 1) {
+                if (this.animaceWorma == true) {
+                    image(imgWormRight, pos.x, pos.y - 23, this.width + 20, this.height + 15);
+                }
+                else if (this.animaceWorma == false) {
+                    image(imgWormRight2, pos.x, pos.y - 23, this.width + 20, this.height + 15);
+                }
             }
+
             pop();
             this.showTime();
             this.checkPosition();

@@ -33,7 +33,12 @@ class Granat {
         if (this.throw == false) {
             push();
             fill('rgb(240,230,140)');
-            image(imgGr, wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 20, this.r + 10, this.r + 10);
+            if (wormove[this.idWorm].walkingDirection == 0) {
+                image(imgGr, wormove[this.idWorm].body.position.x + 17, wormove[this.idWorm].body.position.y - 23, this.r + 10, this.r + 10);
+            }
+            else if (wormove[this.idWorm].walkingDirection == 1) {
+                image(imgGr, wormove[this.idWorm].body.position.x - 5, wormove[this.idWorm].body.position.y - 23, this.r + 10, this.r + 10);
+            }
             pop();
         }
 
@@ -116,7 +121,7 @@ class Granat {
     }
 
     explode(idWorm) {
-       
+
         audio.play();
 
         this.exploded = true;
@@ -224,21 +229,21 @@ class Granat {
 
 }
 function mouseReleased() {
-    if (mouseUse == false){
-        mouseUse= true;
+    if (mouseUse == false) {
+        mouseUse = true;
         setTimeout(() => {
-           mouseUse = false
+            mouseUse = false
         }, 2500);
-        
+
         for (let i = 0; i < wormove.length; i++) {
             if (wormove[i].playing == true) {
-    
+
                 if (wormove[i].weapon.isInside == true) {
-    
+
                     setTimeout(() => {
                         wormove[i].weapon.slingshot.detach()
                     }, 10);
-    
+
                     setTimeout(() => {
                         mouseDis == false;
                     }, 500);
@@ -252,26 +257,26 @@ function mouseReleased() {
                             wormove[i].weapon.inAir = true;
                             wormove[i].weapon.grnInAir = true;
                         }, 200);
-                        
-    
+
+
                     }
-    
-    
+
+
                     setTimeout(() => {
                         wormove[i].weapon.inAir = true;
                         wormove[i].weapon.grnInAir = true;
                     }, 200);
-    
+
                     wormove[i].isInside = false;
-    
+
                     wormove[i].weapon.mouse == null;
                     Matter.Composite.remove(world, wormove[i].weapon.mConstraint)
                 }
-    
+
             }
         }
     }
-   
+
 }
 function mousePressed() {
     for (let i = 0; i < wormove.length; i++) {
