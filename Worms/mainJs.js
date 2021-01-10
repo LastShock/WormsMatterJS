@@ -6,7 +6,7 @@ let water = 0;
 let waterGo = false;
 let destructionOn = true;
 let devloper = true;
-let alertDone=0;
+let alertDone = 0;
 let isGameOver = false;
 let waterClass = new Water();
 
@@ -19,7 +19,7 @@ let time1 = new Date();
 let time2 = new Date();
 
 var audio = new Audio('/sounds/granade.mp3');
-audio.volume=0.1;
+audio.volume = 0.1;
 
 let canvas;
 let canvasWidth = 1520;
@@ -48,10 +48,10 @@ function preload() {
     imgWormLeft2 = loadImage("textury/2.png");
     imgWormRight = loadImage("textury/1Right.png");
     imgWormRight2 = loadImage("textury/2Right.png");
-    imgExplosion = loadImage("https://pngimage.net/wp-content/uploads/2018/05/explosion-pixel-png-3.png");
-    imgGr = loadImage('https://lh3.googleusercontent.com/1l8lrIhwiqf5JaJX_b6M5HDuYL_AWGe_9VqAZOT8cR51lHwp9TTBCId2h3ydVwGRq72IWmo0a5EZlV705L-5');
+    imgExplosion = loadImage("textury/explosion.png");
+    imgGr = loadImage('textury/granade.png');
     bg = loadImage('textury/sky.png');
-    imgRedGr = loadImage("https://images.vexels.com/media/users/3/208254/isolated/lists/4fd5a9853e5eec607eefeb1871c70ef1-grenade-weapon-flat.png");
+    imgRedGr = loadImage('textury/imgRedGr.png');
 }
 
 function setup() {
@@ -78,7 +78,7 @@ function setup() {
     wormove[0].playing = true;
     if (destructionOn) {
         random = new Destroy();
-    } 
+    }
 
 
     map[0] = new Map("313,226,312,208,312,188,324,171,337,159,349,152,369,148,389,148,403,154,413,162,423,166,435,168,448,168,459,177,464,190,475,199,486,200,500,202,512,204,520,204,540,203,554,203,571,223,575,228,590,231,603,232,613,232,628,233,645,234,661,235,683,235,698,247,707,260,718,264,734,264,747,267,750,286,750,301,731,311,669,312,643,312,572,314,537,317,480,320,443,321,398,314,361,302,336,289,327,271,", 780, 400)
@@ -108,7 +108,7 @@ function draw() {
             wormove[i].weapon.show();
         }
     }
-    
+
     wormove.forEach(worm => worm.show())
     for (let i = 0; i < map.length; i++) {
         if (map[i] != null) {

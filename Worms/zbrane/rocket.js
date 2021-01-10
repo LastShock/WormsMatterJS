@@ -76,10 +76,7 @@ class Rocket {
             if (this.inAir == true) {
                 for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
                     if (map[mapPiece] != null) {
-                        Body.setVelocity(this.bodyWeap, {x: 0, y:0});
-
                         var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
-
                         if (collision.collided) {
                             this.explode(this.idWorm)
                         }

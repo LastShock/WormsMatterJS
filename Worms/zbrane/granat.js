@@ -148,7 +148,6 @@ class Granat {
 
 
         for (let i = 0; i < wormove.length; i++) {
-            console.log(wormove[i])
             let arg1 = (wormove[i].body.position.x - positionGranat.x) * (wormove[i].body.position.x - positionGranat.x);
             let arg2 = (wormove[i].body.position.y - positionGranat.y) * (wormove[i].body.position.y - positionGranat.y);
             let isInside = Math.sqrt(arg1 + arg2);

@@ -132,7 +132,7 @@ class Worm {
             timeRemaning = swapTime + time1.getSeconds() - time2.getSeconds() - 60
         }
         else timeRemaning = swapTime + time1.getSeconds() - time2.getSeconds()
-        if (timeRemaning == 60) timeRemaning = 0;
+        if (timeRemaning > 30) timeRemaning = 0;
 
         fill(255, 0, 0)
         textSize(40);
