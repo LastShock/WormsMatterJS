@@ -143,6 +143,9 @@ class Rocket {
 
             if (isInside <= radius) {
                 if (positionGranat.x > wormove[i].body.position.x) {
+                    if (wormove[i].staticWorm == true) {
+                        wormove[i].staticWorm = false;
+                    }
                     let random = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -100 * random, y: -300 * random });
                     let dmg = random * 30;
@@ -151,6 +154,9 @@ class Rocket {
 
                 }
                 else if (positionGranat.x < wormove[i].body.position.x) {
+                    if (wormove[i].staticWorm == true) {
+                        wormove[i].staticWorm = false;
+                    }
                     let random = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 100 * random, y: -300 * random });
                     let dmg = random * 30;

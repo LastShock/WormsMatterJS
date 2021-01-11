@@ -92,6 +92,15 @@ class Granat {
                     }
                 }
             }
+            for (let worm = 0; worm < wormove.length; worm++) {
+                var collision = Matter.SAT.collides(wormove[worm].body, this.bodyWeap)
+                if (collision.collided) {
+                    wormove[worm].static();
+                    setTimeout(() => {
+                        wormove[worm].staticWorm = false;
+                    }, 200)
+                }
+            }
 
 
             let position = this.bodyWeap.position;
@@ -119,7 +128,6 @@ class Granat {
         image(imgExplosion, this.explosionX - 25, this.explosionY - 25, 50, 50);
         pop();
     }
-
     explode(idWorm) {
 
         audio.play();
@@ -154,6 +162,9 @@ class Granat {
 
             if (isInside <= radius && dmgDone == false) {
                 if (positionGranat.x > wormove[i].body.position.x) {
+                    if (wormove[i].staticWorm == true) {
+                        wormove[i].staticWorm = false;
+                    }
                     let random = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -100 * random, y: -300 * random });
                     let dmg = random * 30;
@@ -163,6 +174,9 @@ class Granat {
 
                 }
                 else if (positionGranat.x < wormove[i].body.position.x) {
+                    if (wormove[i].staticWorm == true) {
+                        wormove[i].staticWorm = false;
+                    }
                     let random = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 100 * random, y: -300 * random });
                     let dmg = random * 30;
