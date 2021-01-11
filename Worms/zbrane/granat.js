@@ -41,15 +41,15 @@ class Granat {
             }
             pop();
         }
-
         else if (this.throw == true && this.bodyCreated == false) {
             this.bodyCreated = true;
-            this.bodyWeap = Matter.Bodies.circle(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 20, this.r / 2 - 9);
+            this.bodyWeap = Matter.Bodies.circle(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 20, this.r/2);
 
 
             Matter.World.add(world, this.bodyWeap);
             this.bodyWeap.mass = 500;
             this.bodyWeap.restitution = 0.4;
+            this.bodyWeap.friction = 1 ;
 
 
             this.slingshot = new SlingShot(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 46, this.bodyWeap);
@@ -67,9 +67,7 @@ class Granat {
         else if (this.throw == true && this.bodyCreated == true) {
             this.slingshot.show();
             Matter.Body.setPosition(wormove[this.idWorm].body, wormove[this.idWorm].position)
-
             push();
-            fill('rgb(240,230,140)');
             image(imgGr, this.bodyWeap.position.x - 10, this.bodyWeap.position.y - 5, this.r + 10, this.r + 10);
             pop();
             if (this.grnInAir == true) {
@@ -301,7 +299,7 @@ function mousePressed() {
             let arg1 = (positionGranat.x - positonMouse.x) * (positionGranat.x - positonMouse.x);
             let arg2 = (positionGranat.y - positonMouse.y) * (positionGranat.y - positonMouse.y);
             let isInside = Math.sqrt(arg1 + arg2);
-            if (isInside < 50) {
+            if (isInside < 25) {
                 wormove[i].weapon.isInside = true;
             }
         }

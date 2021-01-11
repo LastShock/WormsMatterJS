@@ -25,6 +25,8 @@ class Worm {
         this.body.tension = 1;
         this.body.mass = 10000;
         Matter.World.add(world, this.body);
+        this.body.friction = 1;
+
 
     }
 
@@ -165,7 +167,7 @@ class Worm {
     checkPosition() {
         const pos = this.body.position;
 
-        if (pos.y > 730) {
+        if (pos.y > 740) {
             pos.x = -500;
             pos.x = -100;
             this.body.isStatic = true;
@@ -217,12 +219,12 @@ class Worm {
             fill('rgb(240,230,140)');
             if (this.walkingDirection == 0) {
                 if (this.animaceWorma == true) {
-                    image(imgWormLeft, pos.x, pos.y - 23, this.width + 20, this.height + 15);
+                    image(imgWormLeft, pos.x-10, pos.y - 23, this.width + 20, this.height + 15);
 
                 }
                 else if (this.animaceWorma == false) {
 
-                    image(imgWormLeft2, pos.x, pos.y - 23, this.width + 20, this.height + 15);
+                    image(imgWormLeft2, pos.x-10, pos.y - 23, this.width + 20, this.height + 15);
 
                 }
             }
@@ -243,8 +245,6 @@ class Worm {
         else if (this.alive == false && this.playing == true) {
             this.SwapWorm(this.idFPl);
         }
-        this.checkTeam()
-
     }
     SwapWorm(idWorm) {
         mouseUse = false;
@@ -266,6 +266,7 @@ class Worm {
 
 
         }
+        this.checkTeam();
     }
     checkTeam() {
         let aliveTeam = 0;
@@ -285,7 +286,6 @@ class Worm {
 
         }
     }
-
     checkTime(idWorm) {
         for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
             if (map && map[mapPiece] && map[mapPiece].body) {

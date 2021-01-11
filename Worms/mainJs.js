@@ -100,6 +100,7 @@ function draw() {
     Matter.Engine.update(engine);
     background(bg);
 
+   
     for (let i = 0; i < wormove.length; i++) {
         if (wormove[i].weapon.exploded == true) {
             wormove[i].weapon.showExplosion();
@@ -108,13 +109,13 @@ function draw() {
             wormove[i].weapon.show();
         }
     }
-
-    wormove.forEach(worm => worm.show())
     for (let i = 0; i < map.length; i++) {
         if (map[i] != null) {
             map[i].show();
         }
     }
+    wormove.forEach(worm => worm.show())
+
     waterClass.show();
 
 

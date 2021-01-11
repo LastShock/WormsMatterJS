@@ -74,7 +74,6 @@ class Destroy {
             polygonBoom[i] = [this.souradnice[i].x + boomX, this.souradnice[i].y + boomY]
         }
         let triangles = PolygonTools.polygon.subtract(polygomClass, polygonBoom);
-        console.log(triangles);
         Matter.Composite.remove(world, polygon.body)
 
         /*if(triangles.length>1){
