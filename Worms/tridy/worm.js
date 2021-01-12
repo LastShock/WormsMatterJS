@@ -9,6 +9,9 @@ class Worm {
         this.animaceWorma = true;
         this.animace = 0;
         this.walkingDirection = 0;
+        this.animaceJumpRight = false; 
+        this.animaceJumpLeft = false; 
+
 
         this.team = team;
         this.alive = true;
@@ -93,8 +96,11 @@ class Worm {
                         if (map[mapPiece] != null) {
                             var collision = Matter.SAT.collides(map[mapPiece].body, worm)
                             if (collision.collided && thisObject.keyboardDis == false) {
+                                thisObject.walkingDirection = 1;
+                                thisObject.animaceJumpLeft = false 
+                                setTimeout(function () { thisObject.animaceJumpLeft = false }, 1000);
                                 thisObject.keyboardDis = true;
-                                setTimeout(function () { thisObject.keyboardDis = false }, 1800);
+                                setTimeout(function () { thisObject.keyboardDis = false }, 1000);
                                 setTimeout(function () { thisObject.inAir = false }, 1800);
                                 thisObject.inAir = true;
                                 Body.applyForce(worm, { x: worm.position.x, y: worm.position.y }, { x: 100.0, y: -300.5 });
@@ -108,7 +114,10 @@ class Worm {
                             var collision = Matter.SAT.collides(map[mapPiece].body, worm)
                             if (collision.collided && thisObject.keyboardDis == false) {
                                 thisObject.keyboardDis = true;
-                                setTimeout(function () { thisObject.keyboardDis = false }, 1800);
+                                thisObject.walkingDirection = 0;
+                                thisObject.animaceJumpLeft = false 
+                                setTimeout(function () { thisObject.animaceJumpLeft = false }, 1000);
+                                setTimeout(function () { thisObject.keyboardDis = false }, 1000);
                                 setTimeout(function () { thisObject.inAir = false }, 1800);
                                 thisObject.inAir = true;
                                 Body.applyForce(worm, { x: worm.position.x, y: worm.position.y }, { x: -100.0, y: -300.5 });
@@ -129,16 +138,11 @@ class Worm {
     }
     showTime() {
         time2 = new Date();
-        let timeRemaning;
-        if (swapTime + time1.getSeconds() - time2.getSeconds() > 60) {
-            timeRemaning = swapTime + time1.getSeconds() - time2.getSeconds() - 60
-        }
-        else timeRemaning = swapTime + time1.getSeconds() - time2.getSeconds()
-        if (timeRemaning > 30) timeRemaning = 0;
+        let timeRemaning = (time1 - time2) / 1000;
 
         fill(255, 0, 0)
         textSize(40);
-        text(timeRemaning, 1450, 32);
+        text(Math.round(timeRemaning), 1450, 32);
     }
     showHP() {
         const pos = this.body.position;
@@ -199,6 +203,7 @@ class Worm {
             this.alive = false;
             this.SwapWorm(this.idFPl);
         }
+        this.checkTeam();
     }
     show() {
         frameRate(60);
@@ -217,24 +222,32 @@ class Worm {
             this.showHP();
             push()
             fill('rgb(240,230,140)');
-            if (this.walkingDirection == 0) {
+            if (this.walkingDirection == 0 && this.animaceJumpLeft == false && this.animaceJumpRight == false) {
                 if (this.animaceWorma == true) {
-                    image(imgWormLeft, pos.x-10, pos.y - 23, this.width + 20, this.height + 15);
+                    image(imgWormLeft, pos.x - 10, pos.y - 23, this.width + 20, this.height + 15);
 
                 }
                 else if (this.animaceWorma == false) {
 
-                    image(imgWormLeft2, pos.x-10, pos.y - 23, this.width + 20, this.height + 15);
+                    image(imgWormLeft2, pos.x - 10, pos.y - 23, this.width + 20, this.height + 15);
 
                 }
             }
-            else if (this.walkingDirection == 1) {
+            else if (this.walkingDirection == 1 && this.animaceJumpLeft == false && this.animaceJumpRight == false) {
                 if (this.animaceWorma == true) {
                     image(imgWormRight, pos.x, pos.y - 23, this.width + 20, this.height + 15);
                 }
                 else if (this.animaceWorma == false) {
                     image(imgWormRight2, pos.x, pos.y - 23, this.width + 20, this.height + 15);
                 }
+            }
+            else if (this.animaceJumpLeft){
+                image(imgJumpLeft, pos.x, pos.y - 23, this.width + 20, this.height + 15);
+
+            }
+            else if(this.animaceJumpRight){
+                image(imgJumpRight, pos.x, pos.y - 23, this.width + 20, this.height + 15);
+
             }
 
             pop();
@@ -249,9 +262,10 @@ class Worm {
     SwapWorm(idWorm) {
         mouseUse = false;
         time1 = new Date();
+        time1.setSeconds(time1.getSeconds() + swapTime);
         this.attack = true;
         this.playing = false;
-        let team = wormove[idWorm].team
+        let team = wormove[idWorm].team;
 
         for (let i = idWorm; i <= wormove.length; i++) {
             if (i == wormove.length) {
@@ -293,12 +307,9 @@ class Worm {
                 if (collision.collided) {
                     time2 = new Date();
 
-                    if (swapTime + time1.getSeconds() > 59 || swapTime + time1.getSeconds() == 0) {
-                        if (((swapTime + time1.getSeconds()) - 59) == time2.getSeconds()) {
-                            this.SwapWorm(idWorm);
-                        }
-                    }
-                    else if (time1.getSeconds() + swapTime == time2.getSeconds()) {
+                    console.log("cas 2:" + time2);
+                    console.log("cas 1:" + time1);
+                    if (time1 <= time2) {
                         this.SwapWorm(idWorm);
                     }
                 }

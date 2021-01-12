@@ -32,6 +32,10 @@ let imgWorm2;
 let imgRpg;
 let waterImg;
 let imgExplosion;
+let imgJumpLeft;
+let imgJumpRight;
+
+
 let timeGranatStart = new Date();
 let render;
 
@@ -52,6 +56,9 @@ function preload() {
     imgGr = loadImage('textury/granade.png');
     bg = loadImage('textury/sky.png');
     imgRedGr = loadImage('textury/imgRedGr.png');
+    imgJumpLeft = loadImage("textury/3a.png")
+    imgJumpRight = loadImage("textury/3a.png")
+
 }
 
 function setup() {
