@@ -67,7 +67,7 @@ function setup() {
     setTimeout(() => {
         waterGo = true;
         waterClass.waterGo();
-    }, 60000);
+    }, 30000);
 
 
     canvas = createCanvas(canvasWidth, canvasHeigh);

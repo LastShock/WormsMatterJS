@@ -176,6 +176,7 @@ class Worm {
             this.body.isStatic = true;
             this.alive = false;
             this.SwapWorm(this.idFPl);
+            this.checkTeam();
 
         }
 
@@ -186,6 +187,8 @@ class Worm {
                 this.weapon.removeBody(this.idFPl);
                 this.body.isStatic = true;
                 this.alive = false;
+                this.checkTeam();
+
             }
 
             if (this.playing == true) {
@@ -193,6 +196,8 @@ class Worm {
                 this.body.isStatic = true;
                 this.alive = false;
                 this.SwapWorm(this.idFPl);
+                this.checkTeam();
+
             }
         }
         else if (this.hp <= 0) {
