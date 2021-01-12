@@ -67,7 +67,7 @@ function setup() {
     setTimeout(() => {
         waterGo = true;
         waterClass.waterGo();
-    }, 300000);
+    }, 60000);
 
 
     canvas = createCanvas(canvasWidth, canvasHeigh);
@@ -78,11 +78,11 @@ function setup() {
     wormove[1] = new Worm(350, 280, 2);
     wormove[2] = new Worm(1400, 420, 1);
     wormove[3] = new Worm(350, 500, 2);
-    wormove[4] = new Worm(100, 300, 1);
+    wormove[4] = new Worm(100, 400, 1);
     wormove[5] = new Worm(800, 600, 2);
 
 
-    wormove[0].playing = true;
+    wormove[5].playing = true;
     if (destructionOn) {
         random = new Destroy();
     }

@@ -16,7 +16,7 @@ class Water {
             else {
 
             }
-        }, 300 / 2);
+        }, 3000);
     }
     show() {
         fill('blue');

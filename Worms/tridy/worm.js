@@ -30,7 +30,6 @@ class Worm {
         Matter.World.add(world, this.body);
         this.body.friction = 1;
 
-
     }
 
     controls() {
@@ -73,7 +72,7 @@ class Worm {
 
                 }
                 else if (e.keyCode == '37') {   //walk
-                    Body.setPosition(worm, { x: worm.position.x - 2, y: worm.position.y })
+                    Body.setPosition(worm, { x: worm.position.x - 2, y: worm.position.y-1 })
                     thisObject.animace++;
                     thisObject.walkingDirection = 0;
 
@@ -83,7 +82,7 @@ class Worm {
                     }
                 }
                 else if (e.keyCode == '39') {
-                    Body.setPosition(worm, { x: worm.position.x + 2, y: worm.position.y })
+                    Body.setPosition(worm, { x: worm.position.x + 2, y: worm.position.y-1 })
                     thisObject.walkingDirection = 1;
                     thisObject.animace++
                     if (thisObject.animace == 4) {
@@ -207,7 +206,7 @@ class Worm {
     }
     show() {
         frameRate(60);
-
+       
         if (this.staticWorm == true) {
             Matter.Body.setPosition(this.body, this.position);
 
@@ -258,8 +257,10 @@ class Worm {
         else if (this.alive == false && this.playing == true) {
             this.SwapWorm(this.idFPl);
         }
+        
     }
     SwapWorm(idWorm) {
+        
         mouseUse = false;
         time1 = new Date();
         time1.setSeconds(time1.getSeconds() + swapTime);
@@ -273,6 +274,11 @@ class Worm {
                 continue;
             }
             if (wormove[i].team != team) {
+                setTimeout(()=>{
+                    wormove[i].keyboardDis = false;
+                    
+                }, 500)
+                wormove[i].keyboardDis = true;
                 wormove[i].playing = true;
                 wormove[i].attack = false;
                 break;
@@ -307,9 +313,8 @@ class Worm {
                 if (collision.collided) {
                     time2 = new Date();
 
-                    console.log("cas 2:" + time2);
-                    console.log("cas 1:" + time1);
-                    if (time1 <= time2) {
+                  
+                    if (time1 <= time2 ) {
                         this.SwapWorm(idWorm);
                     }
                 }

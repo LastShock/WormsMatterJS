@@ -83,6 +83,16 @@ class Rocket {
                     }
                 }
             }
+            for (let worm = 0; worm < wormove.length; worm++) {
+                var collision = Matter.SAT.collides(wormove[worm].body, this.bodyWeap)
+                if (collision.collided) {
+                    wormove[worm].static();
+                    Body.setVelocity( wormove[worm].body, {x: 0, y: -0});
+                    setTimeout(() => {
+                        wormove[worm].staticWorm = false;
+                    }, 200)
+                }
+            }
 
             let position = this.bodyWeap.position;
             if (position.x > 1900 || position.x < 0 || position.y > 800 || position.y < -200) {
@@ -147,7 +157,7 @@ class Rocket {
                         wormove[i].staticWorm = false;
                     }
                     let random = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
-                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -100 * random, y: -300 * random });
+                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -200 * random, y: -400 * random });
                     let dmg = random * 30;
                     dmg = Math.trunc(dmg)
                     wormove[i].hp -= dmg;
@@ -158,7 +168,7 @@ class Rocket {
                         wormove[i].staticWorm = false;
                     }
                     let random = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
-                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 100 * random, y: -300 * random });
+                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 200 * random, y: -400 * random });
                     let dmg = random * 30;
                     dmg = Math.trunc(dmg)
                     wormove[i].hp -= dmg;

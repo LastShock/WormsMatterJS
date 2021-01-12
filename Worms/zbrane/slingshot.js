@@ -6,7 +6,7 @@ class SlingShot {
                 y: y
             },
             bodyB: body,
-            stiffness: 0.1,
+            stiffness: 0.8,
             length: 10
         }
         this.sling = Constraint.create(options)
@@ -18,6 +18,7 @@ class SlingShot {
     }
 
     show() {
+        
         if (this.sling.bodyB) {
             const posA = this.sling.pointA;
             const posB = this.sling.bodyB.position;
