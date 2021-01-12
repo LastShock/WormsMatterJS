@@ -68,7 +68,7 @@ class Granat {
             this.slingshot.show();
             Matter.Body.setPosition(wormove[this.idWorm].body, wormove[this.idWorm].position)
             push();
-            image(imgGr, this.bodyWeap.position.x - 10, this.bodyWeap.position.y - 5, this.r + 10, this.r + 10);
+            image(imgGr, this.bodyWeap.position.x - 10, this.bodyWeap.position.y - 10, this.r + 10, this.r + 10);
             pop();
             if (this.grnInAir == true) {
                 Body.applyForce(this.bodyWeap, { x: this.bodyWeap.position.x, y: this.bodyWeap.position.y }, { x: wind, y: 0 });
@@ -299,7 +299,7 @@ function mousePressed() {
             let arg1 = (positionGranat.x - positonMouse.x) * (positionGranat.x - positonMouse.x);
             let arg2 = (positionGranat.y - positonMouse.y) * (positionGranat.y - positonMouse.y);
             let isInside = Math.sqrt(arg1 + arg2);
-            if (isInside < 25) {
+            if (isInside < 10) {
                 wormove[i].weapon.isInside = true;
             }
         }

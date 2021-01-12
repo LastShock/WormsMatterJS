@@ -36,7 +36,7 @@ let timeGranatStart = new Date();
 let render;
 
 let swapTime = 30;
-let wind = 0.5;
+let wind = 0.3;
 
 let animaceWorma = true;
 
