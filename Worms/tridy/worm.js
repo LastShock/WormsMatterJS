@@ -29,9 +29,10 @@ class Worm {
         this.body.mass = 10000;
         Matter.World.add(world, this.body);
         this.body.friction = 1;
+        this.body.frictionStatic = 0.8;
+
 
     }
-
     controls() {
 
         let id = this.idFPl;

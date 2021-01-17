@@ -94,14 +94,7 @@ class Rocket {
                 }
             }
 
-            let position = this.bodyWeap.position;
-            if (position.x > 1900 || position.x < 0 || position.y > 800 || position.y < -200) {
-                Matter.Composite.remove(world, this.bodyWeap)
-                this.bodyCreated = false;
-                this.throw = false;
-                this.inAir = false;
-                wormove[this.idWorm].SwapWorm(this.idWorm);
-            }
+            
 
         }
 

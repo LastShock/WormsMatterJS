@@ -6,8 +6,8 @@ class SlingShot {
                 y: y
             },
             bodyB: body,
-            stiffness: 0.8,
-            length: 10
+            stiffness: 0.1,
+            length: 5
         }
         this.sling = Constraint.create(options)
         World.add(world, this.sling)

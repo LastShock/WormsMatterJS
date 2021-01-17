@@ -3,9 +3,9 @@ class Water {
     }
 
     waterGo() {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
 
-            water += 1;
+            water += 0.5;
         }
         setTimeout(() => {
             if (water < canvasHeigh / 2.8) {

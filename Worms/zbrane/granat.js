@@ -51,6 +51,7 @@ class Granat {
             this.bodyWeap.mass = 500;
             this.bodyWeap.restitution = 0.4;
             this.bodyWeap.friction = 1;
+            this.bodyWeap.frictionStatic = 0.8;
 
 
             this.slingshot = new SlingShot(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 46, this.bodyWeap);
@@ -109,15 +110,7 @@ class Granat {
             }
 
 
-            let position = this.bodyWeap.position;
-            if (position.x > 1900 || position.x < 0 || position.y > 800 || position.y < -200) {
-                Matter.Composite.remove(world, this.bodyWeap)
-                this.bodyCreated = false;
-                this.throw = false;
-                this.inAir = false;
-                wormove[this.idWorm].SwapWorm(this.idWorm);
-            }
-
+           
 
         }
 
@@ -261,7 +254,7 @@ function mouseReleased() {
 
                     setTimeout(() => {
                         wormove[i].weapon.slingshot.detach()
-                    }, 10);
+                    }, 25);
 
                     setTimeout(() => {
                         mouseDis == false;
@@ -310,7 +303,7 @@ function mousePressed() {
             let arg1 = (positionGranat.x - positonMouse.x) * (positionGranat.x - positonMouse.x);
             let arg2 = (positionGranat.y - positonMouse.y) * (positionGranat.y - positonMouse.y);
             let isInside = Math.sqrt(arg1 + arg2);
-            if (isInside < 30) {
+            if (isInside < 25) {
                 wormove[i].weapon.isInside = true;
             }
         }
