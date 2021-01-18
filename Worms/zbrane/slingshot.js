@@ -40,12 +40,17 @@ class SlingShot {
             const posA = this.sling.pointA;
             const posB = this.sling.bodyB.position;
             if (Math.abs(posA.x - posB.x) >= 30 || Math.abs(posA.y - posB.y) >= 30) {
+              
+                this.sling.stiffness = 1
+                this.sling.length = 31;
+                if(this.pause == false) this.pause = true;
+                setTimeout(() => {
+                    this.pause = false;
+                }, 100)
+            }
+            else if (Math.abs(posA.x - posB.x) < 25 && Math.abs(posA.y - posB.y) < 25 && this.pause == false) {
                 console.log("X: " + Math.abs(posA.x - posB.x))
                 console.log("Y: " + Math.abs(posA.y - posB.y))
-                this.sling.stiffness = 1
-                this.sling.length = 30;
-            }
-            else if (Math.abs(posA.x - posB.x) < 26 && Math.abs(posA.y - posB.y) < 26) {
                 this.sling.stiffness = 0.2;
                 this.sling.length = 0.5;
             }

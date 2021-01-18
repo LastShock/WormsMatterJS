@@ -47,7 +47,6 @@ class Rocket {
 
             Matter.World.add(world, this.bodyWeap);
 
-            this.slingshot = new SlingShot(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 46, this.bodyWeap);
 
             this.mouse = Mouse.create(canvas.elt);
             const options = {
@@ -56,17 +55,24 @@ class Rocket {
             this.mouse.pixelRatio = pixelDensity();
 
             this.mConstraint = MouseConstraint.create(engine, options);
+            this.slingshot = new SlingShot(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 46, this.bodyWeap, this.mouse);
+
             World.add(world, this.mConstraint);
 
         }
         else if (this.throw == true && this.bodyCreated == true) {
             Matter.Body.setPosition(wormove[this.idWorm].body, wormove[this.idWorm].position)
+            const angle= this.bodyWeap.angle;
 
             this.slingshot.show();
+
             push();
+            translate(this.bodyWeap.position.x,this.bodyWeap.position.y);
+            rotate(angle);
             fill('rgb(240,230,140)');
-            image(imgRedGr, this.bodyWeap.position.x - 10, this.bodyWeap.position.y - 5, this.r + 10, this.r + 10);
+            image(imgRedGr, - 10, - 5, this.r + 10, this.r + 10);
             pop();
+
             if (this.grnInAir == true) {
                 Body.applyForce(this.bodyWeap, { x: this.bodyWeap.position.x, y: this.bodyWeap.position.y }, { x: wind, y: 0 });
 
@@ -149,6 +155,8 @@ class Rocket {
                         wormove[i].staticWorm = false;
                     }
                     let random = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
+                    wormove[i].walkingDirection = 1;
+                    wormove[i].animaceJumpLeft = true; 
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -200 * random, y: -400 * random });
                     let dmg = random * 30;
                     dmg = Math.trunc(dmg)
@@ -160,6 +168,8 @@ class Rocket {
                         wormove[i].staticWorm = false;
                     }
                     let random = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
+                    wormove[i].walkingDirection = 0;
+                    wormove[i].animaceJumpRight= true; 
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 200 * random, y: -400 * random });
                     let dmg = random * 30;
                     dmg = Math.trunc(dmg)
