@@ -48,7 +48,7 @@ class SlingShot {
                     this.pause = false;
                 }, 100)
             }
-            else if (Math.abs(posA.x - posB.x) < 25 && Math.abs(posA.y - posB.y) < 25 && this.pause == false) {
+            else if (Math.abs(posA.x - posB.x) < 20 && Math.abs(posA.y - posB.y) < 20 && this.pause == false) {
                 console.log("X: " + Math.abs(posA.x - posB.x))
                 console.log("Y: " + Math.abs(posA.y - posB.y))
                 this.sling.stiffness = 0.2;
