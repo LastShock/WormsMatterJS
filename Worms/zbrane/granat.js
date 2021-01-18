@@ -30,7 +30,6 @@ class Granat {
 
     show() {
         frameRate(60);
-
         if (this.throw == false) {
             push();
             fill('rgb(240,230,140)');
@@ -38,6 +37,12 @@ class Granat {
                 image(imgGr, wormove[this.idWorm].body.position.x + 17, wormove[this.idWorm].body.position.y - 23, this.r + 10, this.r + 10);
             }
             else if (wormove[this.idWorm].walkingDirection == 1) {
+                image(imgGr, wormove[this.idWorm].body.position.x - 5, wormove[this.idWorm].body.position.y - 23, this.r + 10, this.r + 10);
+            }
+            if (wormove[this.idWorm].animaceJumpRight) {
+                image(imgGr, wormove[this.idWorm].body.position.x + 17, wormove[this.idWorm].body.position.y - 23, this.r + 10, this.r + 10);
+            }
+            else if (wormove[this.idWorm].animaceJumpLeft) {
                 image(imgGr, wormove[this.idWorm].body.position.x - 5, wormove[this.idWorm].body.position.y - 23, this.r + 10, this.r + 10);
             }
             pop();
@@ -49,12 +54,10 @@ class Granat {
 
             Matter.World.add(world, this.bodyWeap);
             this.bodyWeap.mass = 500;
-            this.bodyWeap.restitution = 0.4;
+            this.bodyWeap.restitution = 0.1;
             this.bodyWeap.friction = 1;
-            this.bodyWeap.frictionStatic = 0.8;
+            this.bodyWeap.frictionStatic = 1;
 
-
-            this.slingshot = new SlingShot(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 46, this.bodyWeap);
 
             this.mouse = Mouse.create(canvas.elt);
             const options = {
@@ -64,25 +67,28 @@ class Granat {
 
             this.mConstraint = MouseConstraint.create(engine, options);
             World.add(world, this.mConstraint);
+            this.slingshot = new SlingShot(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 46, this.bodyWeap, this.mouse);
+
 
         }
         else if (this.throw == true && this.bodyCreated == true) {
+
+
             this.slingshot.show();
             Matter.Body.setPosition(wormove[this.idWorm].body, wormove[this.idWorm].position)
-            push();
-            image(imgGr, this.bodyWeap.position.x - 10, this.bodyWeap.position.y - 10, this.r + 10, this.r + 10);
-            pop();
-            if (this.bodyWeap.speed > 30 ) {
-                this.bodyvel = this.bodyWeap.velocity;
-                console.log(this.bodyvel)
-            }
-            if (this.bodyWeap.speed > 20 && this.bodyvel != null){
-                Matter.Body.setVelocity(this.bodyWeap, this.bodyvel)
-            }
-                if (this.grnInAir == true) {
-                    Body.applyForce(this.bodyWeap, { x: this.bodyWeap.position.x, y: this.bodyWeap.position.y }, { x: wind, y: 0 });
+            const angle= this.bodyWeap.angle;
 
-                }
+            push();
+            translate(this.bodyWeap.position.x,this.bodyWeap.position.y);
+            rotate(angle);
+            image(imgGr,  - 10,  - 10, this.r + 10, this.r + 10);
+            pop();
+            
+           
+            if (this.grnInAir == true) {
+                Body.applyForce(this.bodyWeap, { x: this.bodyWeap.position.x, y: this.bodyWeap.position.y }, { x: wind, y: 0 });
+
+            }
 
 
 
@@ -254,7 +260,8 @@ function mouseReleased() {
 
                     setTimeout(() => {
                         wormove[i].weapon.slingshot.detach()
-                    }, 25);
+
+                    }, 10);
 
                     setTimeout(() => {
                         mouseDis == false;

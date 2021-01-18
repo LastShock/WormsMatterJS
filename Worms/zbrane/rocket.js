@@ -112,7 +112,6 @@ class Rocket {
         image(imgExplosion, this.explosionX - 25, this.explosionY - 25, 50, 50);
         pop();
     }
-
     explode(idWorm) {
         
         audio.play();

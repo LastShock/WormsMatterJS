@@ -29,6 +29,7 @@ class Worm {
         this.body.mass = 10000;
         Matter.World.add(world, this.body);
         this.body.friction = 1;
+        this.body.restitution = 0.5;
         this.body.frictionStatic = 0.8;
 
 
@@ -97,8 +98,7 @@ class Worm {
                             var collision = Matter.SAT.collides(map[mapPiece].body, worm)
                             if (collision.collided && thisObject.keyboardDis == false) {
                                 thisObject.walkingDirection = 1;
-                                thisObject.animaceJumpLeft = false 
-                                setTimeout(function () { thisObject.animaceJumpLeft = false }, 1000);
+                                thisObject.animaceJumpLeft = true; 
                                 thisObject.keyboardDis = true;
                                 setTimeout(function () { thisObject.keyboardDis = false }, 1000);
                                 setTimeout(function () { thisObject.inAir = false }, 1800);
@@ -115,8 +115,7 @@ class Worm {
                             if (collision.collided && thisObject.keyboardDis == false) {
                                 thisObject.keyboardDis = true;
                                 thisObject.walkingDirection = 0;
-                                thisObject.animaceJumpLeft = false 
-                                setTimeout(function () { thisObject.animaceJumpLeft = false }, 1000);
+                                thisObject.animaceJumpRight = true;
                                 setTimeout(function () { thisObject.keyboardDis = false }, 1000);
                                 setTimeout(function () { thisObject.inAir = false }, 1800);
                                 thisObject.inAir = true;
@@ -262,6 +261,15 @@ class Worm {
         }
         else if (this.alive == false && this.playing == true) {
             this.SwapWorm(this.idFPl);
+        }
+        for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
+            if (map[mapPiece] != null) {
+                var collision = Matter.SAT.collides(map[mapPiece].body, this.body)
+                if (collision.collided) {
+                    if(this.animaceJumpLeft) this.animaceJumpLeft = false;
+                    if(this.animaceJumpRight) this.animaceJumpRight = false;
+                }
+            }
         }
         
     }

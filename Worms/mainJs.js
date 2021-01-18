@@ -40,7 +40,7 @@ let timeGranatStart = new Date();
 let render;
 
 let swapTime = 30;
-let wind = 0.3;
+let wind = 0.03;
 
 let animaceWorma = true;
 
@@ -56,8 +56,8 @@ function preload() {
     imgGr = loadImage('textury/granade.png');
     bg = loadImage('textury/sky.png');
     imgRedGr = loadImage('textury/imgRedGr.png');
-    imgJumpLeft = loadImage("textury/3a.png")
-    imgJumpRight = loadImage("textury/3a.png")
+    imgJumpLeft = loadImage("textury/JumpRightInAir.png")
+    imgJumpRight = loadImage("textury/JumpLeftInAir.png")
 
 }
 
@@ -104,7 +104,7 @@ function setup() {
 
 function draw() {
 
-    Matter.Engine.update(engine);
+    Matter.Engine.update(engine, [delta=16], [correction=1])
     background(bg);
 
    
