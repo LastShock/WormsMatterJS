@@ -29,7 +29,6 @@ class Granat {
     }
 
     show() {
-        frameRate(60);
         if (this.throw == false) {
             push();
             fill('rgb(240,230,140)');
@@ -50,7 +49,6 @@ class Granat {
         else if (this.throw == true && this.bodyCreated == false) {
             this.bodyCreated = true;
             this.bodyWeap = Matter.Bodies.circle(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 20, this.r / 2);
-
 
             Matter.World.add(world, this.bodyWeap);
             this.bodyWeap.mass = 500;
@@ -76,15 +74,15 @@ class Granat {
 
             this.slingshot.show();
             Matter.Body.setPosition(wormove[this.idWorm].body, wormove[this.idWorm].position)
-            const angle= this.bodyWeap.angle;
+            const angle = this.bodyWeap.angle;
 
             push();
-            translate(this.bodyWeap.position.x,this.bodyWeap.position.y);
+            translate(this.bodyWeap.position.x, this.bodyWeap.position.y);
             rotate(angle);
             image(imgGr,  - 10,  - 10, this.r + 10, this.r + 10);
             pop();
-            
-           
+
+
             if (this.grnInAir == true) {
                 Body.applyForce(this.bodyWeap, { x: this.bodyWeap.position.x, y: this.bodyWeap.position.y }, { x: wind, y: 0 });
 
@@ -93,11 +91,34 @@ class Granat {
 
 
             if (this.inAir == true) {
+                let nextPositionX = this.bodyWeap.position.x + (this.bodyWeap.velocity.x*2);
+                let nextPositionY = this.bodyWeap.position.y + (this.bodyWeap.velocity.y*2);
+
+                let pointX = nextPositionX - this.bodyWeap.position.x;
+                let pointY = nextPositionY - this.bodyWeap.position.y;
+
+                /*let check = Matter.Bodies.rectangle(this.bodyWeap.position.x, this.bodyWeap.position.y, pointX, pointY);
+                check.isSensor = true;
+                World.add(world, check)
+
+                push();
+                fill('#fae');
+                rect(this.bodyWeap.position.x, this.bodyWeap.position.y, pointX, pointY);
+                pop();*/
+
                 for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
                     if (map[mapPiece] != null) {
 
                         var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
+                        //var collision2 = Matter.SAT.collides(map[mapPiece].body, check)
 
+                       /* if (collision2) {
+                            console.log("hit");
+                            //pause1 = true;
+                            Matter.Body.setPosition(this.bodyWeap, {x: this.bodyWeap.position.x-this.bodyWeap.velocity.x, y: this.bodyWeap.position.y-this.bodyWeap.velocity.y})
+                            Matter.Body.setVelocity(this.bodyWeap, { x: -this.bodyWeap.velocity.x, y: -this.bodyWeap.velocity.y })
+                            World.remove(world, check);
+                        }*/
                         if (collision.collided) {
                             this.grnInAir = false;
                         }
@@ -116,7 +137,7 @@ class Granat {
             }
 
 
-           
+
 
         }
 
@@ -172,7 +193,7 @@ class Granat {
                     }
                     let random = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
                     wormove[i].walkingDirection = 1;
-                    wormove[i].animaceJumpLeft = true; 
+                    wormove[i].animaceJumpLeft = true;
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -100 * random, y: -300 * random });
                     let dmg = random * 30;
                     dmg = Math.trunc(dmg)
@@ -186,7 +207,7 @@ class Granat {
                     }
                     let random = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
                     wormove[i].walkingDirection = 0;
-                    wormove[i].animaceJumpRight = true; 
+                    wormove[i].animaceJumpRight = true;
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 100 * random, y: -300 * random });
                     let dmg = random * 30;
                     dmg = Math.trunc(dmg)
@@ -264,7 +285,6 @@ function mouseReleased() {
 
                     setTimeout(() => {
                         wormove[i].weapon.slingshot.detach()
-
                     }, 10);
 
                     setTimeout(() => {

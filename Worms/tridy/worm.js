@@ -23,6 +23,7 @@ class Worm {
 
         this.playing = false;
         this.attack = false;
+        this.canCheck = false;
 
         this.body = Matter.Bodies.rectangle(this.x, this.y, this.width, this.height)
         this.body.tension = 1;
@@ -100,10 +101,14 @@ class Worm {
                                 thisObject.walkingDirection = 1;
                                 thisObject.animaceJumpLeft = true; 
                                 thisObject.keyboardDis = true;
+                                thisObject.canCheck = false;
                                 setTimeout(function () { thisObject.keyboardDis = false }, 1000);
                                 setTimeout(function () { thisObject.inAir = false }, 1800);
+                                setTimeout(() => {
+                                    thisObject.canCheck = true;
+                                }, 800);
                                 thisObject.inAir = true;
-                                Body.applyForce(worm, { x: worm.position.x, y: worm.position.y }, { x: 100.0, y: -300.5 });
+                                Body.applyForce(worm, { x: worm.position.x, y: worm.position.y }, { x: 90, y: -300 });
                             }
                         }
                     }
@@ -116,10 +121,13 @@ class Worm {
                                 thisObject.keyboardDis = true;
                                 thisObject.walkingDirection = 0;
                                 thisObject.animaceJumpRight = true;
+                                thisObject.canCheck = false;
+
                                 setTimeout(function () { thisObject.keyboardDis = false }, 1000);
                                 setTimeout(function () { thisObject.inAir = false }, 1800);
+                                setTimeout(() => {thisObject.canCheck = true}, 800);
                                 thisObject.inAir = true;
-                                Body.applyForce(worm, { x: worm.position.x, y: worm.position.y }, { x: -100.0, y: -300.5 });
+                                Body.applyForce(worm, { x: worm.position.x, y: worm.position.y }, { x: -90, y: -300 });
                             }
                             else {
                             }
@@ -210,7 +218,6 @@ class Worm {
         this.checkTeam();
     }
     show() {
-        frameRate(60);
        
         if (this.staticWorm == true) {
             Matter.Body.setPosition(this.body, this.position);
@@ -266,8 +273,12 @@ class Worm {
             if (map[mapPiece] != null) {
                 var collision = Matter.SAT.collides(map[mapPiece].body, this.body)
                 if (collision.collided) {
-                    if(this.animaceJumpLeft) this.animaceJumpLeft = false;
-                    if(this.animaceJumpRight) this.animaceJumpRight = false;
+                    if(this.canCheck == true){
+                        if(this.animaceJumpLeft) this.animaceJumpLeft = false;
+                        if(this.animaceJumpRight) this.animaceJumpRight = false;
+                        this.canCheck = false;
+                    }
+                    
                 }
             }
         }
@@ -291,7 +302,7 @@ class Worm {
                 setTimeout(()=>{
                     wormove[i].keyboardDis = false;
                     
-                }, 500)
+                }, 1000)
                 wormove[i].keyboardDis = true;
                 wormove[i].playing = true;
                 wormove[i].attack = false;
