@@ -73,41 +73,31 @@ class Destroy {
         for (let i = 0; i < this.souradnice.length; i++) {
             polygonBoom[i] = [this.souradnice[i].x + boomX, this.souradnice[i].y + boomY]
         }
+
+
         let triangles = PolygonTools.polygon.subtract(polygomClass, polygonBoom);
         Matter.Composite.remove(world, polygon.body)
-
-        /*if(triangles.length>1){
-            let path="";
-            let polX= polygon.x;
-            let polY= polygon.y;
-            for(let i =0;i<triangles.length;i++){
-                path="";
-                for(let k =0;k<triangles[i].length;k++){
-                    path+=triangles[i][k][0]+","+triangles[i][k][1]+","
-                }
-                if(i==0){
-                    let id=polygon.id
-                    map[polygon.id]=new Map(path, polX, polY)
-                    map[polygon.id].id=id
-                    console.log(map[polygon.id])
-
-                }
-                else{
-                    map[map.length]=new Map(path, polX, polY)
-                    console.log(map[length-1])
-                }
-            }
-        }*/
 
 
         let path = "";
         for (let i = 0; i < triangles[0].length; i++) {
             path += triangles[0][i][0] + "," + triangles[0][i][1] + ","
         }
+
+        let randomak = Matter.Vertices.fromPath(path);
+        let test = [];
+        for (let i = 0; i < randomak.length; i++) {
+            test[i] = [randomak[i].x, randomak[i].y]
+        }
+
+        
+        let xMove = PolygonTools.polygon.centroid(test)[0] - PolygonTools.polygon.centroid(polygomClass)[0];
+        let yMove = PolygonTools.polygon.centroid(test)[1] - PolygonTools.polygon.centroid(polygomClass)[1];
+
         let id = polygon.id;
         let polX = polygon.x;
         let polY = polygon.y;
-        map[polygon.id] = new Map(path, polX, polY)
+        map[polygon.id] = new Map(path, polX + xMove, polY + yMove)
         map[polygon.id].id = id
 
 
@@ -127,15 +117,15 @@ class Destroy {
         }
         console.log(randomPath)
     }
-    /*show(){
+    show() {
         push();
         beginShape();
         fill('rgb(0,255,0)');
         stroke('rgb(0,255,0)');
-        for(let i =0;i<this.souradnice.length;i++){
-            vertex(this.souradnice[i].x, this.souradnice[i].y); 
+        for (let i = 0; i < this.souradnice.length; i++) {
+            vertex(this.souradnice[i].x, this.souradnice[i].y);
         }
         endShape();
         pop();
-    }*/
+    }
 }

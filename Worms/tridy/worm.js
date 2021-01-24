@@ -144,12 +144,13 @@ class Worm {
 
     }
     showTime() {
-        time2 = new Date();
-        let timeRemaning = (time1 - time2) / 1000;
+        /*time2 = new Date();
+        let timeRemaning = (time1 - time2) / 1000;*/
+        
 
         fill(255, 0, 0)
         textSize(40);
-        text(Math.round(timeRemaning), 1450, 32);
+        text(swapTime-cas2, 1450, 32);
     }
     showHP() {
         const pos = this.body.position;
@@ -287,8 +288,8 @@ class Worm {
     SwapWorm(idWorm) {
         
         mouseUse = false;
-        time1 = new Date();
-        time1.setSeconds(time1.getSeconds() + swapTime);
+        cas2 = 0;
+        cas =0;
         this.attack = true;
         this.playing = false;
         let team = wormove[idWorm].team;
@@ -336,10 +337,9 @@ class Worm {
             if (map && map[mapPiece] && map[mapPiece].body) {
                 var collision = Matter.SAT.collides(map[mapPiece].body, this.body)
                 if (collision.collided) {
-                    time2 = new Date();
 
                   
-                    if (time1 <= time2 ) {
+                    if (cas2 >= swapTime ) {
                         this.SwapWorm(idWorm);
                     }
                 }
