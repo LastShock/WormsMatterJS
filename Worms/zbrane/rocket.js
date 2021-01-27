@@ -120,7 +120,7 @@ class Rocket {
     }
     explode(idWorm) {
         
-        audio.play();
+        audioExplode.play();
         
         this.exploded = true;
         this.explosionX = this.bodyWeap.position.x;
@@ -154,6 +154,7 @@ class Rocket {
                     if (wormove[i].staticWorm == true) {
                         wormove[i].staticWorm = false;
                     }
+                    audioOuch.play();
                     let random = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
                     wormove[i].walkingDirection = 1;
                     wormove[i].animaceJumpLeft = true; 
@@ -167,6 +168,7 @@ class Rocket {
                     if (wormove[i].staticWorm == true) {
                         wormove[i].staticWorm = false;
                     }
+                    audioOuch.play();
                     let random = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
                     wormove[i].walkingDirection = 0;
                     wormove[i].animaceJumpRight= true; 

@@ -155,8 +155,9 @@ class Granat {
         pop();
     }
     explode(idWorm) {
+        this.slingshot = null;
 
-        audio.play();
+        audioExplode.play();
 
         this.exploded = true;
         this.explosionX = this.bodyWeap.position.x;
@@ -191,9 +192,13 @@ class Granat {
                     if (wormove[i].staticWorm == true) {
                         wormove[i].staticWorm = false;
                     }
+                    audioOuch.play();
                     let random = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
                     wormove[i].walkingDirection = 1;
                     wormove[i].animaceJumpLeft = true;
+                    setTimeout(() => {
+                        wormove[i].canCheck = true;
+                    }, 800);
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -100 * random, y: -300 * random });
                     let dmg = random * 30;
                     dmg = Math.trunc(dmg)
@@ -205,9 +210,13 @@ class Granat {
                     if (wormove[i].staticWorm == true) {
                         wormove[i].staticWorm = false;
                     }
+                    audioOuch.play();
                     let random = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
                     wormove[i].walkingDirection = 0;
                     wormove[i].animaceJumpRight = true;
+                    setTimeout(() => {
+                        wormove[i].canCheck = true;
+                    }, 800);
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 100 * random, y: -300 * random });
                     let dmg = random * 30;
                     dmg = Math.trunc(dmg)
