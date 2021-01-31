@@ -72,3 +72,9 @@ body {
     width: 100%;
     background-color:  #333;
   }
+  #cont{
+    margin-left: 200px;
+  }
+  #contrl{
+    margin-top: -35px;
+  }

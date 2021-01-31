@@ -14,7 +14,7 @@ class Map {
         this.body.isStatic = true;
         this.body.friction = 0.8;
         Matter.World.add(world, this.body);
-
+        
         let minBeforeX = 20000;
         let minAfterX = 20000;
         let minBeforeY = 20000;
@@ -33,9 +33,8 @@ class Map {
 
 
     }
-
     show() {
-
+        
         push();
         beginShape();
         fill('rgb(0,255,0)');

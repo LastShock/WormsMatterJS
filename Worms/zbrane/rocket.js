@@ -62,12 +62,12 @@ class Rocket {
         }
         else if (this.throw == true && this.bodyCreated == true) {
             Matter.Body.setPosition(wormove[this.idWorm].body, wormove[this.idWorm].position)
-            const angle= this.bodyWeap.angle;
+            const angle = this.bodyWeap.angle;
 
             this.slingshot.show();
 
             push();
-            translate(this.bodyWeap.position.x,this.bodyWeap.position.y);
+            translate(this.bodyWeap.position.x, this.bodyWeap.position.y);
             rotate(angle);
             fill('rgb(240,230,140)');
             image(imgRedGr, - 10, - 5, this.r + 10, this.r + 10);
@@ -93,14 +93,14 @@ class Rocket {
                 var collision = Matter.SAT.collides(wormove[worm].body, this.bodyWeap)
                 if (collision.collided) {
                     wormove[worm].static();
-                    Body.setVelocity( wormove[worm].body, {x: 0, y: -0});
+                    Body.setVelocity(wormove[worm].body, { x: 0, y: -0 });
                     setTimeout(() => {
                         wormove[worm].staticWorm = false;
                     }, 200)
                 }
             }
 
-            
+
 
         }
 
@@ -119,9 +119,9 @@ class Rocket {
         pop();
     }
     explode(idWorm) {
-        
+
         audioExplode.play();
-        
+
         this.exploded = true;
         this.explosionX = this.bodyWeap.position.x;
         this.explosionY = this.bodyWeap.position.y;
@@ -157,7 +157,10 @@ class Rocket {
                     audioOuch.play();
                     let random = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
                     wormove[i].walkingDirection = 1;
-                    wormove[i].animaceJumpLeft = true; 
+                    wormove[i].animaceJumpLeft = true;
+                    setTimeout(() => {
+                        wormove[i].canCheck = true;
+                    }, 800);
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -200 * random, y: -400 * random });
                     let dmg = random * 30;
                     dmg = Math.trunc(dmg)
@@ -171,7 +174,10 @@ class Rocket {
                     audioOuch.play();
                     let random = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
                     wormove[i].walkingDirection = 0;
-                    wormove[i].animaceJumpRight= true; 
+                    wormove[i].animaceJumpRight = true;
+                    setTimeout(() => {
+                        wormove[i].canCheck = true;
+                    }, 800);
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 200 * random, y: -400 * random });
                     let dmg = random * 30;
                     dmg = Math.trunc(dmg)
@@ -207,7 +213,9 @@ class Rocket {
         wormove[idWorm].weapon.bodyCreated = false;
         wormove[idWorm].weapon.throw = false;
         wormove[idWorm].weapon.inAir = false;
-        Matter.Composite.remove(world, wormove[idWorm].weapon.bodyWeap)
+        if(this.bodyWeap){
+            Matter.Composite.remove(world, this.bodyWeap)
+        }
     }
     checkTime(idWorm) {
         for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {

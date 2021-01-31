@@ -308,7 +308,7 @@ function mouseReleased() {
                         setTimeout(() => {
                             wormove[i].weapon.inAir = true;
                             wormove[i].weapon.grnInAir = true;
-                        }, 10);
+                        }, 50);
 
 
                     }
@@ -331,7 +331,7 @@ function mouseReleased() {
             }
         }
     }
-
+ 
 }
 function mousePressed() {
     for (let i = 0; i < wormove.length; i++) {
@@ -343,7 +343,7 @@ function mousePressed() {
             let arg1 = (positionGranat.x - positonMouse.x) * (positionGranat.x - positonMouse.x);
             let arg2 = (positionGranat.y - positonMouse.y) * (positionGranat.y - positonMouse.y);
             let isInside = Math.sqrt(arg1 + arg2);
-            if (isInside < 25) {
+            if (isInside < 15) {
                 wormove[i].weapon.isInside = true;
             }
         }

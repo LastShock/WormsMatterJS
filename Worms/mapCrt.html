@@ -15,17 +15,18 @@
         <a  href="index.html">Home</a>
         <a href="hra.html">Hra</a>
         <a href="dokumentace.html">Dokumentace</a>
+        <a href ="ovladani.html">Ovládání</a>
         <a class="active" href="mapCrt.html">Map Creator</a>
     </div>
     <div class="item2">
-    <h3>Draw a polygon :D</h3>
+    <h3>Nakresli si mapu</h3>
     <textarea id="textarea" name="textarea" rows="10" cols="70">
     </textarea>
     <script>
         // global vars
         var dragging = false, drawing = false, startPoint;
         var svg = d3.select('body').append('svg')
-            .attr('height', 380)
+            .attr('height', 470)
             .attr('width', 1420);
 
         var points = [], g;
@@ -142,8 +143,7 @@
             return color;
         }
     </script>
-    </div>
-    <div class="item3">
+    
 
     </div>
 </body>
