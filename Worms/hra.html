@@ -18,7 +18,13 @@
         body{
             background-color: #333;
         }
+        .options{
+            margin-right: -600px;
 
+        }
+        button{
+            margin-top: 12px;
+        }
     </style>
     <title>Worms are back! In your browser</title>
 </head>
@@ -29,6 +35,14 @@
         <a href="dokumentace.html">Dokumentace</a>
         <a href ="ovladani.html">Ovládání</a>
         <a href="mapCrt.html">Map Creator</a>
+
+        <div class="options">
+            <button onclick="dmgOn()">Dekstrukce zap</button>
+            <button onclick="dmgOff()">Dekstrukce vyp</button>
+            <button onclick="location.reload()">Restart</button>
+
+
+        </div>
     </div>
     <script src="zbrane/slingshot.js"></script>
     <script src="tridy/water.js"></script>

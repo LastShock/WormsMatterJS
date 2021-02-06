@@ -1,3 +1,12 @@
+function dmgOn(){
+    random = new Destroy();
+    destructionOn = true;
+}
+function dmgOff(){
+    destructionOn = false;
+    random = null;
+}
+
 const { Engine, World, Bodies, Mouse, MouseConstraint, Constraint, Body, Render } = Matter;
 let map1;
 let wormove = [];
@@ -96,10 +105,10 @@ function setup() {
 
     wormove[0] = new Worm(1200, 290, 1, "Pavel ");
     wormove[1] = new Worm(350, 280, 2, "Jan ");
-    wormove[2] = new Worm(1400, 420, 1, "Karel ");
-    wormove[3] = new Worm(350, 500, 2, "Zdeněk");
-    wormove[4] = new Worm(100, 400, 1, "David");
-    wormove[5] = new Worm(800, 600, 2, "Ondra");
+    wormove[2] = new Worm(1400, 440, 1, "Karel ");
+    wormove[3] = new Worm(350, 650, 2, "Zdeněk");
+    wormove[4] = new Worm(100, 450, 1, "David");
+    wormove[5] = new Worm(800, 620, 2, "Ondra");
 
 
     wormove[0].playing = true;
