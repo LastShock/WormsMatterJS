@@ -1,10 +1,24 @@
-function dmgOn(){
-    random = new Destroy();
-    destructionOn = true;
+with ((window && window.console && window.console._commandLineAPI) || {}) {
+	// your script here.
+}	
+function deleteAllCookies() {
+    var cookies = document.cookie.split(";");
+
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+}function dmgOn(){
+    deleteAllCookies();
+    document.cookie ="on";
+    location.reload();
 }
 function dmgOff(){
-    destructionOn = false;
-    random = null;
+    deleteAllCookies();
+    document.cookie ="off";
+    location.reload();
 }
 
 const { Engine, World, Bodies, Mouse, MouseConstraint, Constraint, Body, Render } = Matter;
@@ -22,7 +36,7 @@ let waterClass = new Water();
 let mouseDis = false;
 let mouseUse = false;
 
-
+console.log(document.cookie);
 
 let time1 = new Date();
 let time2 = new Date();
@@ -102,9 +116,9 @@ function setup() {
     engine = Engine.create();
 
     world = engine.world;
-
+ 
     wormove[0] = new Worm(1200, 290, 1, "Pavel ");
-    wormove[1] = new Worm(350, 280, 2, "Jan ");
+    wormove[1] = new Worm(350, 265, 2, "Jan ");
     wormove[2] = new Worm(1400, 440, 1, "Karel ");
     wormove[3] = new Worm(350, 650, 2, "Zdeněk");
     wormove[4] = new Worm(100, 450, 1, "David");
@@ -120,9 +134,11 @@ function setup() {
     time1 = new Date();
     time1.setSeconds(time1.getSeconds() + swapTime);
 
-    if (destructionOn) {
+    if (document.cookie !="off" ) {
+        console.log("hello1")
         random = new Destroy();
     }
+    
 
 
     map[0] = new Map("313,226,312,208,312,188,324,171,337,159,349,152,369,148,389,148,403,154,413,162,423,166,435,168,448,168,459,177,464,190,475,199,486,200,500,202,512,204,520,204,540,203,554,203,571,223,575,228,590,231,603,232,613,232,628,233,645,234,661,235,683,235,698,247,707,260,718,264,734,264,747,267,750,286,750,301,731,311,669,312,643,312,572,314,537,317,480,320,443,321,398,314,361,302,336,289,327,271,", 780, 380)

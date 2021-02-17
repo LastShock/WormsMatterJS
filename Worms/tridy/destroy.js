@@ -27,7 +27,7 @@ class Destroy {
         Matter.World.add(world, this.body);
 
     }
-    destroy(polygon, explosionX, explosionY) {
+    destroyPol(polygon, explosionX, explosionY) {
         Matter.Composite.remove(world, this.body)
 
         let random = "";
@@ -85,14 +85,13 @@ class Destroy {
         }
 
         let randomak = Matter.Vertices.fromPath(path);
-        let test = [];
+        let newPolygon = [];
         for (let i = 0; i < randomak.length; i++) {
-            test[i] = [randomak[i].x, randomak[i].y]
+            newPolygon[i] = [randomak[i].x, randomak[i].y]
         }
 
-        
-        let xMove = PolygonTools.polygon.centroid(test)[0] - PolygonTools.polygon.centroid(polygomClass)[0];
-        let yMove = PolygonTools.polygon.centroid(test)[1] - PolygonTools.polygon.centroid(polygomClass)[1];
+        let xMove = PolygonTools.polygon.centroid(newPolygon)[0] - PolygonTools.polygon.centroid(polygomClass)[0];
+        let yMove = PolygonTools.polygon.centroid(newPolygon)[1] - PolygonTools.polygon.centroid(polygomClass)[1];
 
         let id = polygon.id;
         let polX = polygon.x;

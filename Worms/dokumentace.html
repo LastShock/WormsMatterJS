@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/menu.css">
     <link rel="icon" href="textury/defBig.png">
     <title>Dokumentace</title>
+    <style>
+        #cont{
+            margin-left: 170px;
+        }
+        .item3{
+            margin-top: 50px;
+        }
+    </style>
 </head>
+
 <body>
     <div class="topnav" class="item1">
         <a href="index.html">Home</a>
         <a href="hra.html">Hra</a>
         <a class="active" href="dokumentace.html">Dokumentace</a>
-        <a href ="ovladani.html">Ovládání</a>
+        <a href="ovladani.html">Ovládání</a>
         <a href="mapCrt.html">Map Creator</a>
     </div>
     <div class="grid-container">
-        
+
         <div class="item2">
             <h1 id="cont">Dokumentace</header>
         </div>
@@ -26,15 +36,17 @@
             </p>
             <p>
                 Zde si můžete stáhnout dokumentaci k mému maturitnímu projektu.
-
+                <a href="Worms dokumentace mp.docx" download="word">Kliknutím stáhnete dokumentaci projektu</a>
             </p>
             <p>
                 Instrukce
             </p>
             <p>
-                Pokud si chcete hru přizpůsobit musíte do mainJs.js zde si můžete vytvořit další wormy. Pokud si chcete upravit mapu
-                tak musíte do záložky Map Creator zde si načrtnete část mapy a stránka vám vráti souřadnice pro polygon. Poté v mainJs.js 
-                vytvoříte objekt map zde vložíte souřadnice, souřadnice X a souřadnice Y.
+                Pokud si chcete hru přizpůsobit musíte do mainJs.js zde si můžete vytvořit další wormy. Pokud si chcete
+                upravit mapu
+                tak musíte do záložky Map Creator zde si načrtnete část mapy a stránka vám vráti část kódu která mapu přidá.
+                Poté v mainJs.js
+                jen nastavíte souřadnice X a souřadnice Y.
             </p>
         </div>
         <div class="item4">
@@ -46,4 +58,5 @@
     </div>
 
 </body>
+
 </html>

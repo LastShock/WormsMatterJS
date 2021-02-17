@@ -197,8 +197,8 @@ class Rocket {
 
                     var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
 
-                    if (collision.collided) {
-                        random.destroy(map[mapPiece], positionGranat.x, positionGranat.y)
+                    if (collision.collided && document.cookie !="off") {
+                        random.destroyPol(map[mapPiece], positionGranat.x, positionGranat.y)
 
                     }
                 }

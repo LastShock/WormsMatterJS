@@ -47,7 +47,9 @@ class Granat {
             pop();
         }
         else if (this.throw == true && this.bodyCreated == false) {
+            
             this.bodyCreated = true;
+
             this.bodyWeap = Matter.Bodies.circle(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 20, this.r / 2);
 
             Matter.World.add(world, this.bodyWeap);
@@ -237,8 +239,8 @@ class Granat {
 
                     var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
 
-                    if (collision.collided) {
-                        random.destroy(map[mapPiece], positionGranat.x, positionGranat.y)
+                    if (collision.collided && document.cookie !="off") {
+                        random.destroyPol(map[mapPiece], positionGranat.x, positionGranat.y)
 
                     }
                 }

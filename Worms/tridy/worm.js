@@ -30,8 +30,8 @@ class Worm {
         this.body.tension = 1;
         this.body.mass = 10000;
         Matter.World.add(world, this.body);
-        this.body.friction = 1;
-        this.body.restitution = 0.2;
+        this.body.friction = 0.5;
+        this.body.restitution =0;
         this.body.frictionStatic = 0.8;
 
 
