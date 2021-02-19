@@ -11,6 +11,11 @@
         svg {
             border-style: solid;
         }
+
+        ol {
+            list-style-type: none;
+            text-align: left;
+        }
     </style>
 
 </head>
@@ -23,11 +28,16 @@
         <a href="ovladani.html">Ovládání</a>
         <a class="active" href="mapCrt.html">Map Creator</a>
     </div>
+
     <div class="item2">
+
         <h3>Nakresli si mapu</h3>
-        <textarea id="textarea" name="textarea" rows="10" cols="70">
-    </textarea>
+
+
+
         <script>
+            var entry;
+            var listLength=0;
             // global vars
             var dragging = false, drawing = false, startPoint;
             var svg = d3.select('body').append('svg')
@@ -44,12 +54,16 @@
                 });
 
             svg.on('mouseup', function () {
+                document.getElementById("buttonAdd").disabled = true;
                 if (dragging) return;
                 d3.select("g").remove();
                 drawing = true;
                 startPoint = [d3.mouse(this)[0], d3.mouse(this)[1]];
                 if (svg.select('g.drawPoly').empty()) g = svg.append('g').attr('class', 'drawPoly');
+
+
                 if (d3.event.target.hasAttribute('is-handle')) {
+
                     closePolygon();
                     return;
                 };
@@ -76,11 +90,13 @@
             function closePolygon() {
                 let value = "map[x] = new Map('";
                 for (let random = 0; random < points.length; random++) {
-                    console.log(points[random]);
                     value += Math.trunc(points[random][0]) + "," + Math.trunc(points[random][1]) + ", "
                 }
-                value += "osa X, osa Y);"
+                value += "osa X, osa Y);";
+
                 document.getElementById('textarea').value = value;
+                document.getElementById("buttonAdd").disabled = false;
+
                 svg.select('g.drawPoly').remove();
                 var g = svg.append('g');
                 g.append('polygon')
@@ -137,7 +153,7 @@
 
                     value += Math.trunc(newPoints[random][0]) + "," + Math.trunc(newPoints[random][1]) + ","
                 }
-                
+
                 document.getElementById('textarea').value = value + "random";
 
             }
@@ -150,10 +166,29 @@
                 }
                 return color;
             }
+            function addToList() {
+                var list = document.getElementById('seznam');
+                entry = document.createElement('li');
+                valueText = document.getElementById('textarea').value;
+                entry.appendChild(document.createTextNode(valueText));
+                list.appendChild(entry);
+
+                document.getElementById("buttonAdd").disabled = true;
+
+
+            }
+            
         </script>
 
 
+
+
     </div>
+    <textarea id="textarea" name="textarea" rows="10" cols="70">
+    </textarea>
+    <button disabled id="buttonAdd" onclick="addToList()">Přidat do seznamu</button>
+    <ol id="seznam">
+    </ol>
 </body>
 
 </html>

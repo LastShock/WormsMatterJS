@@ -1,6 +1,3 @@
-with ((window && window.console && window.console._commandLineAPI) || {}) {
-	// your script here.
-}	
 function deleteAllCookies() {
     var cookies = document.cookie.split(";");
 
@@ -135,7 +132,6 @@ function setup() {
     time1.setSeconds(time1.getSeconds() + swapTime);
 
     if (document.cookie !="off" ) {
-        console.log("hello1")
         random = new Destroy();
     }
     
