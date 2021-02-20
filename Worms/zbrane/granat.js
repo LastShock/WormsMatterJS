@@ -99,28 +99,12 @@ class Granat {
                 let pointX = nextPositionX - this.bodyWeap.position.x;
                 let pointY = nextPositionY - this.bodyWeap.position.y;
 
-                /*let check = Matter.Bodies.rectangle(this.bodyWeap.position.x, this.bodyWeap.position.y, pointX, pointY);
-                check.isSensor = true;
-                World.add(world, check)
-
-                push();
-                fill('#fae');
-                rect(this.bodyWeap.position.x, this.bodyWeap.position.y, pointX, pointY);
-                pop();*/
-
+               
                 for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
                     if (map[mapPiece] != null) {
 
                         var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
-                        //var collision2 = Matter.SAT.collides(map[mapPiece].body, check)
-
-                       /* if (collision2) {
-                            console.log("hit");
-                            //pause1 = true;
-                            Matter.Body.setPosition(this.bodyWeap, {x: this.bodyWeap.position.x-this.bodyWeap.velocity.x, y: this.bodyWeap.position.y-this.bodyWeap.velocity.y})
-                            Matter.Body.setVelocity(this.bodyWeap, { x: -this.bodyWeap.velocity.x, y: -this.bodyWeap.velocity.y })
-                            World.remove(world, check);
-                        }*/
+                       
                         if (collision.collided) {
                             this.grnInAir = false;
                         }

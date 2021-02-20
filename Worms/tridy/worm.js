@@ -19,21 +19,24 @@ class Worm {
         this.weapon = new Granat(this.idFPl, this.x, this.y);
 
         this.keyboardDis = false;
-        this.inAir = false;
 
         this.playing = false;
         this.attack = false;
         this.canCheck = false;
-        setTimeout(() =>{this.static()}, 2000)
+        setTimeout(() => { this.static() }, 2000)
 
         this.body = Matter.Bodies.rectangle(this.x, this.y, this.width, this.height)
         this.body.tension = 1;
         this.body.mass = 10000;
         Matter.World.add(world, this.body);
         this.body.friction = 0.5;
-        this.body.restitution =0;
+        this.body.restitution = 0;
         this.body.frictionStatic = 0.8;
 
+
+        this.maxY = 0;
+        this.Ystart = 0;
+        this.falling = false;
 
 
     }
@@ -102,13 +105,10 @@ class Worm {
                                 thisObject.keyboardDis = true;
                                 thisObject.canCheck = false;
                                 setTimeout(function () { thisObject.keyboardDis = false }, 1000);
-                                setTimeout(function () { thisObject.inAir = false }, 1800);
                                 setTimeout(() => {
                                     thisObject.canCheck = true;
                                 }, 200);
-                                jumping[Math.floor(Math.random() * 2)].play();   
-
-                                thisObject.inAir = true;
+                                jumping[Math.floor(Math.random() * 2)].play();
                                 Body.applyForce(worm, { x: worm.position.x, y: worm.position.y }, { x: 90, y: -300 });
                             }
                         }
@@ -125,10 +125,8 @@ class Worm {
                                 thisObject.canCheck = false;
 
                                 setTimeout(function () { thisObject.keyboardDis = false }, 1000);
-                                setTimeout(function () { thisObject.inAir = false }, 1800);
                                 setTimeout(() => { thisObject.canCheck = true }, 200);
-                                jumping[Math.floor(Math.random() * 2)].play();   
-                                thisObject.inAir = true;
+                                jumping[Math.floor(Math.random() * 2)].play();
                                 Body.applyForce(worm, { x: worm.position.x, y: worm.position.y }, { x: -90, y: -300 });
                             }
                             else {
@@ -222,7 +220,7 @@ class Worm {
         this.checkTeam();
     }
     show() {
-        if(this.playing){
+        if (this.playing) {
             this.staticWorm = false;
         }
 
@@ -230,7 +228,7 @@ class Worm {
             Matter.Body.setPosition(this.body, this.position);
 
         }
-        
+
 
         if (this.alive == true) {
             push();
@@ -277,6 +275,10 @@ class Worm {
         else if (this.alive == false && this.playing == true) {
             this.SwapWorm(this.idFPl);
         }
+        if (this.maxY < this.body.position.y) {
+
+            this.maxY = this.body.position.y;
+        }
         for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
             if (map[mapPiece] != null) {
                 var collision = Matter.SAT.collides(map[mapPiece].body, this.body)
@@ -285,9 +287,25 @@ class Worm {
                         if (this.animaceJumpLeft) this.animaceJumpLeft = false;
                         if (this.animaceJumpRight) this.animaceJumpRight = false;
                         this.canCheck = false;
-                    }
 
+                    }
+                    if (Math.abs(this.Ystart - this.maxY) > 100) {
+                        this.hp = this.hp - Math.round(Math.abs(this.Ystart - this.maxY) / 10);
+                        audioOuch.play();
+                        this.falling = false;
+                        this.keyboardDis = true;
+                        setTimeout(() => {
+                            this.SwapWorm(this.idFPl);
+                            this.keyboardDis = false;
+                        }, 500);
+                    }
                 }
+            }
+            if (collision.collided == false && this.falling == false) {
+
+                this.falling = true;
+                this.maxY = this.body.position.y;
+                this.Ystart = this.body.position.y;
             }
         }
 
