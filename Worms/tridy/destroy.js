@@ -78,30 +78,39 @@ class Destroy {
         let triangles = PolygonTools.polygon.subtract(polygomClass, polygonBoom);
         Matter.Composite.remove(world, polygon.body)
 
+        for (let o = 0; o < triangles.length; o++) {
+            let path = "";
+            for (let i = 0; i < triangles[o].length; i++) {
+                path += triangles[o][i][0] + "," + triangles[o][i][1] + ","
+            }
 
-        let path = "";
-        for (let i = 0; i < triangles[0].length; i++) {
-            path += triangles[0][i][0] + "," + triangles[0][i][1] + ","
+            let randomak = Matter.Vertices.fromPath(path);
+           
+            let newPolygon = [];
+            for (let i = 0; i < randomak.length; i++) {
+                newPolygon[i] = [randomak[i].x, randomak[i].y]
+            }
+            let xMove = PolygonTools.polygon.centroid(newPolygon)[0] - PolygonTools.polygon.centroid(polygomClass)[0];
+            let yMove = PolygonTools.polygon.centroid(newPolygon)[1] - PolygonTools.polygon.centroid(polygomClass)[1];
+
+            let id = polygon.id;
+            let polX = polygon.x;
+            let polY = polygon.y;
+            if(o==0){
+                map[polygon.id] = new Map(path, polX + xMove, polY + yMove)
+                map[polygon.id].id = id
+    
+            }
+            else if(o==1)
+            {
+                map[map.length] = new Map(path, polX +xMove-0.5 , polY + yMove)
+            }
+           
+
+
+            Matter.Composite.remove(world, this.body)
         }
-
-        let randomak = Matter.Vertices.fromPath(path);
-        let newPolygon = [];
-        for (let i = 0; i < randomak.length; i++) {
-            newPolygon[i] = [randomak[i].x, randomak[i].y]
-        }
-
-        let xMove = PolygonTools.polygon.centroid(newPolygon)[0] - PolygonTools.polygon.centroid(polygomClass)[0];
-        let yMove = PolygonTools.polygon.centroid(newPolygon)[1] - PolygonTools.polygon.centroid(polygomClass)[1];
-
-        let id = polygon.id;
-        let polX = polygon.x;
-        let polY = polygon.y;
-        map[polygon.id] = new Map(path, polX + xMove, polY + yMove)
-        map[polygon.id].id = id
-
-
-
-        Matter.Composite.remove(world, this.body)
+        
 
 
 

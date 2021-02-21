@@ -282,7 +282,8 @@ class Worm {
         for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
             if (map[mapPiece] != null) {
                 var collision = Matter.SAT.collides(map[mapPiece].body, this.body)
-                if (collision.collided) {
+                if (collision.collided) { 
+                    this.keyboardDis = false;
                     if (this.canCheck == true) {
                         if (this.animaceJumpLeft) this.animaceJumpLeft = false;
                         if (this.animaceJumpRight) this.animaceJumpRight = false;
@@ -294,15 +295,18 @@ class Worm {
                         audioOuch.play();
                         this.falling = false;
                         this.keyboardDis = true;
+
                         setTimeout(() => {
                             this.SwapWorm(this.idFPl);
                             this.keyboardDis = false;
                         }, 500);
                     }
+                    this.maxY = this.body.position.y;
+                    this.Ystart = this.body.position.y;
                 }
             }
             if (collision.collided == false && this.falling == false) {
-
+                this.keyboardDis = true;
                 this.falling = true;
                 this.maxY = this.body.position.y;
                 this.Ystart = this.body.position.y;
