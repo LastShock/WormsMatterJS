@@ -13,7 +13,6 @@
         }
 
         ol {
-            list-style-type: none;
             text-align: left;
         }
     </style>
@@ -55,6 +54,7 @@
 
             svg.on('mouseup', function () {
                 document.getElementById("buttonAdd").disabled = true;
+                document.getElementById("textarea").value ="";
                 if (dragging) return;
                 d3.select("g").remove();
                 drawing = true;
