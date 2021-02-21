@@ -37,7 +37,7 @@ class Worm {
         this.maxY = 0;
         this.Ystart = 0;
         this.falling = false;
-
+        this.move = false;
 
     }
     controls() {
@@ -56,7 +56,7 @@ class Worm {
             if (play == true && attack == false && weapon.throw == false && thisObject.keyboardDis == false) {
                 e = e || window.event;
 
-                if (e.keyCode == '32') {// throw
+                if (e.keyCode == '32' && thisObject.move == true) {// throw
                     for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
                         if (map[mapPiece] != null) {
                             var collision = Matter.SAT.collides(map[mapPiece].body, worm)
@@ -85,6 +85,7 @@ class Worm {
                         thisObject.animaceWorma = !thisObject.animaceWorma
                         thisObject.animace = 0;
                     }
+                    thisObject.move = true;
                 }
                 else if (e.keyCode == '39') {
                     Body.setPosition(worm, { x: worm.position.x + 2, y: worm.position.y - 1 })
@@ -94,6 +95,7 @@ class Worm {
                         thisObject.animaceWorma = !thisObject.animaceWorma
                         thisObject.animace = 0;
                     }
+                    thisObject.move = true;
                 }
                 else if (e.keyCode == '67') {   //jump
                     for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
@@ -110,6 +112,8 @@ class Worm {
                                 }, 200);
                                 jumping[Math.floor(Math.random() * 2)].play();
                                 Body.applyForce(worm, { x: worm.position.x, y: worm.position.y }, { x: 90, y: -300 });
+                                thisObject.move = true;
+
                             }
                         }
                     }
@@ -128,9 +132,9 @@ class Worm {
                                 setTimeout(() => { thisObject.canCheck = true }, 200);
                                 jumping[Math.floor(Math.random() * 2)].play();
                                 Body.applyForce(worm, { x: worm.position.x, y: worm.position.y }, { x: -90, y: -300 });
+                                thisObject.move = true;
                             }
-                            else {
-                            }
+
                         }
                     }
                 }
@@ -282,7 +286,7 @@ class Worm {
         for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
             if (map[mapPiece] != null) {
                 var collision = Matter.SAT.collides(map[mapPiece].body, this.body)
-                if (collision.collided) { 
+                if (collision.collided) {
                     this.keyboardDis = false;
                     if (this.canCheck == true) {
                         if (this.animaceJumpLeft) this.animaceJumpLeft = false;
@@ -315,7 +319,7 @@ class Worm {
 
     }
     SwapWorm(idWorm) {
-
+        this.move = false;
         mouseUse = false;
         time1 = new Date();
         time1.setSeconds(time1.getSeconds() + swapTime);
