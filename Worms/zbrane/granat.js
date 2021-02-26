@@ -47,7 +47,7 @@ class Granat {
             pop();
         }
         else if (this.throw == true && this.bodyCreated == false) {
-            
+
             this.bodyCreated = true;
 
             this.bodyWeap = Matter.Bodies.circle(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 20, this.r / 2);
@@ -81,11 +81,11 @@ class Granat {
             push();
             translate(this.bodyWeap.position.x, this.bodyWeap.position.y);
             rotate(angle);
-            image(imgGr,  - 10,  - 10, this.r + 10, this.r + 10);
+            image(imgGr, - 10, - 10, this.r + 10, this.r + 10);
             pop();
 
 
-            if (this.grnInAir == true) {
+            if (this.grnInAir == true && windOn == true) {
                 Body.applyForce(this.bodyWeap, { x: this.bodyWeap.position.x, y: this.bodyWeap.position.y }, { x: wind, y: 0 });
 
             }
@@ -93,18 +93,14 @@ class Granat {
 
 
             if (this.inAir == true) {
-                let nextPositionX = this.bodyWeap.position.x + (this.bodyWeap.velocity.x*2);
-                let nextPositionY = this.bodyWeap.position.y + (this.bodyWeap.velocity.y*2);
-
-                let pointX = nextPositionX - this.bodyWeap.position.x;
-                let pointY = nextPositionY - this.bodyWeap.position.y;
+               
 
                
                 for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
                     if (map[mapPiece] != null) {
 
                         var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
-                       
+
                         if (collision.collided) {
                             this.grnInAir = false;
                         }
@@ -113,13 +109,16 @@ class Granat {
                 }
             }
             for (let worm = 0; worm < wormove.length; worm++) {
-                var collision = Matter.SAT.collides(wormove[worm].body, this.bodyWeap)
-                if (collision.collided) {
-                    wormove[worm].static();
-                    setTimeout(() => {
-                        wormove[worm].staticWorm = false;
-                    }, 200)
+                if (wormove[worm] != null && wormove[worm].alive == true) {
+                    var collision = Matter.SAT.collides(wormove[worm].body, this.bodyWeap)
+                    if (collision.collided) {
+                        wormove[worm].static();
+                        setTimeout(() => {
+                            wormove[worm].staticWorm = false;
+                        }, 200)
+                    }
                 }
+
             }
 
 
@@ -159,9 +158,7 @@ class Granat {
         wormove[idWorm].weapon.bodyCreated = false;
         wormove[idWorm].weapon.throw = false;
         wormove[idWorm].weapon.inAir = false;
-        wormove[idWorm].SwapWorm(idWorm);
 
-        Matter.Composite.remove(world, wormove[idWorm].weapon.bodyWeap)
 
         let radius = 150;
         let dmgDone = false;
@@ -169,51 +166,56 @@ class Granat {
 
 
         for (let i = 0; i < wormove.length; i++) {
-            let arg1 = (wormove[i].body.position.x - positionGranat.x) * (wormove[i].body.position.x - positionGranat.x);
-            let arg2 = (wormove[i].body.position.y - positionGranat.y) * (wormove[i].body.position.y - positionGranat.y);
-            let isInside = Math.sqrt(arg1 + arg2);
+            if (wormove[i].alive == true) {
+                let arg1 = (wormove[i].body.position.x - positionGranat.x) * (wormove[i].body.position.x - positionGranat.x);
+                let arg2 = (wormove[i].body.position.y - positionGranat.y) * (wormove[i].body.position.y - positionGranat.y);
+                let isInside = Math.sqrt(arg1 + arg2);
 
-            if (isInside <= radius && dmgDone == false) {
-                if (positionGranat.x > wormove[i].body.position.x) {
-                    if (wormove[i].staticWorm == true) {
-                        wormove[i].staticWorm = false;
+                if (isInside <= radius && dmgDone == false) {
+                    if (positionGranat.x > wormove[i].body.position.x) {
+                        if (wormove[i].staticWorm == true) {
+                            wormove[i].staticWorm = false;
+                        }
+                        audioOuch.play();
+                        let random = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
+                        wormove[i].walkingDirection = 1;
+                        wormove[i].animaceJumpLeft = true;
+                        setTimeout(() => {
+                            wormove[i].canCheckWorm = true;
+                        }, 800);
+                        Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -100 * random, y: -300 * random });
+                        let dmg = random * 30;
+                        dmg = Math.trunc(dmg)
+                        wormove[i].hp -= dmg;
+                        dmgDone == true;
+
                     }
-                    audioOuch.play();
-                    let random = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
-                    wormove[i].walkingDirection = 1;
-                    wormove[i].animaceJumpLeft = true;
-                    setTimeout(() => {
-                        wormove[i].canCheck = true;
-                    }, 800);
-                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -100 * random, y: -300 * random });
-                    let dmg = random * 30;
-                    dmg = Math.trunc(dmg)
-                    wormove[i].hp -= dmg;
-                    dmgDone == true;
+                    else if (positionGranat.x < wormove[i].body.position.x) {
+                        if (wormove[i].staticWorm == true) {
+                            wormove[i].staticWorm = false;
+                        }
+                        audioOuch.play();
+                        let random = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
+                        wormove[i].walkingDirection = 0;
+                        wormove[i].animaceJumpRight = true;
+                        setTimeout(() => {
+                            wormove[i].canCheckWorm = true;
+                        }, 800);
+                        Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 100 * random, y: -300 * random });
+                        let dmg = random * 30;
+                        dmg = Math.trunc(dmg)
+                        wormove[i].hp -= dmg;
+                        dmgDone == true;
+
+
+                    }
+
 
                 }
-                else if (positionGranat.x < wormove[i].body.position.x) {
-                    if (wormove[i].staticWorm == true) {
-                        wormove[i].staticWorm = false;
-                    }
-                    audioOuch.play();
-                    let random = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
-                    wormove[i].walkingDirection = 0;
-                    wormove[i].animaceJumpRight = true;
-                    setTimeout(() => {
-                        wormove[i].canCheck = true;
-                    }, 800);
-                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 100 * random, y: -300 * random });
-                    let dmg = random * 30;
-                    dmg = Math.trunc(dmg)
-                    wormove[i].hp -= dmg;
-                    dmgDone == true;
-
-
-                }
-
-
+                Matter.Composite.remove(world, wormove[idWorm].weapon.bodyWeap);
+                wormove[idWorm].SwapWorm(idWorm);
             }
+
 
 
         }
@@ -223,7 +225,7 @@ class Granat {
 
                     var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
 
-                    if (collision.collided && document.cookie !="off") {
+                    if (collision.collided && document.cookie != "off") {
                         random.destroyPol(map[mapPiece], positionGranat.x, positionGranat.y)
 
                     }
@@ -248,16 +250,8 @@ class Granat {
             if (map && map[mapPiece] && map[mapPiece].body) {
                 var collision = Matter.SAT.collides(map[mapPiece].body, wormove[idWorm].body)
                 if (collision.collided) {
-                    time2 = new Date();
-
-                    if (swapTime + time1.getSeconds() > 60) {
-                        if (swapTime + time1.getSeconds() - 60 == time2.getSeconds()) {
-                            return true;
-                        }
-                    }
-                    else if (time1.getSeconds() + swapTime == time2.getSeconds()) {
+                    if (time2 >= time1) {
                         return true;
-
                     }
                 }
             }

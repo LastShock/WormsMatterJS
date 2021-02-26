@@ -7,8 +7,7 @@ function deleteAllCookies() {
         var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
-}
-function dmgOn() {
+} function dmgOn() {
     deleteAllCookies();
     document.cookie = "on";
     location.reload();
@@ -18,33 +17,13 @@ function dmgOff() {
     document.cookie = "off";
     location.reload();
 }
-function detectMob() {
-    const toMatch = [
-        /Android/i,
-        /webOS/i,
-        /iPhone/i,
-        /iPad/i,
-        /iPod/i,
-        /BlackBerry/i,
-        /Windows Phone/i
-    ];
-
-    return toMatch.some((toMatchItem) => {
-        return navigator.userAgent.match(toMatchItem);
-    });
-}
-
-if (detectMob() != false) {
-    window.stop()
-    alert("Je nám líto hra je dostupná pouze pro PC");
-}
 
 const { Engine, World, Bodies, Mouse, MouseConstraint, Constraint, Body, Render } = Matter;
-
+let map1;
 let wormove = [];
 let map = [];
 let water = 0;
-let waterStart = false;
+let waterGo = false;
 let destructionOn = true;
 let developer = true;
 let alertDone = 0;
@@ -80,7 +59,7 @@ const audioOuch = new Audio('sounds/ouch.wav');
 
 
 audioExplode.volume = 0.1;
-let speak = false;
+let soundRdy = false;
 
 let canvas;
 let canvasWidth = 1520;
@@ -103,7 +82,7 @@ let render;
 let swapTime = 30;
 let wind = 0.3;
 
-let windOn = true;
+let windOn = false;
 
 let animaceWorma = true;
 
@@ -127,7 +106,7 @@ function setup() {
 
 
     setTimeout(() => {
-        waterStart = true;
+        waterGo = true;
         waterClass.waterGo();
     }, 300000);
 
@@ -136,6 +115,7 @@ function setup() {
     engine = Engine.create();
 
     world = engine.world;
+
     let startingPosition = [
         { x: 1200, y: 290, taken: false },
         { x: 350, y: 265, taken: false },
@@ -185,8 +165,6 @@ function setup() {
 
     }
 
-
-
     wormove[0].playing = true;
     wormove[0].staticWorm = false;
     wormove[0].attack = false;
@@ -223,12 +201,12 @@ function draw() {
         Matter.Engine.update(engine)
         engine.velocityIterations = 3;
         background(bg);
-        if (speak == false) {
+        if (soundRdy == false) {
             setTimeout(() => {
                 speaking[Math.floor(Math.random() * 5)].play();
-                speak = false;
+                soundRdy = false;
             }, 20000)
-            speak = true;
+            soundRdy = true;
         }
 
         for (let i = 0; i < wormove.length; i++) {

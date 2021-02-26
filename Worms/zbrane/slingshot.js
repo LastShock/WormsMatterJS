@@ -9,7 +9,6 @@ class SlingShot {
             stiffness: 0.1,
             length: 1
         }
-        this.pause = false;
 
         this.mouse = mouse;
         this.mouseXStart = this.mouse.mouseupPosition.x;
@@ -53,10 +52,7 @@ class SlingShot {
                 this.sling.stiffness = 1
                 this.sling.length = 30;
                 this.isLimited = true;
-                if (this.pause == false) this.pause = true;
-                setTimeout(() => {
-                    this.pause = false;
-                }, 100)
+               
             }
             
             line(posA.x, posA.y, posB.x, posB.y)
@@ -78,14 +74,14 @@ function mouseReleased() {
         for (let i = 0; i < wormove.length; i++) {
             if (wormove[i].playing == true) {
 
-                if (wormove[i].weapon.isInside == true && mouseUse == true) {
+                if (wormove[i].weapon.throw!= false && wormove[i].weapon.isInside == true && mouseUse == true ) {
 
                     setTimeout(() => {
                         wormove[i].weapon.slingshot.detach()
                     }, 10);
 
                     setTimeout(() => {
-                        mouseDis == false;
+                        mouseDis = false;
                     }, 500);
                     if (wormove[i].weapon.name == "granat") {
                         setTimeout(() => {
@@ -113,7 +109,8 @@ function mouseReleased() {
 
 
 
-                    Matter.Composite.remove(world, wormove[i].weapon.mConstraint)
+                    Matter.Composite.remove(world, wormove[i].weapon.mConstraint);
+                    break;
                 }
 
             }
@@ -122,18 +119,23 @@ function mouseReleased() {
  
 }
 function mousePressed() {
-    for (let i = 0; i < wormove.length; i++) {
-        if (wormove[i].playing == true && wormove[i].weapon.bodyCreated == true) {
-            let positonMouse = wormove[i].weapon.mouse.position;
 
-
-            let positionGranat = wormove[i].weapon.bodyWeap.position;
-            let arg1 = (positionGranat.x - positonMouse.x) * (positionGranat.x - positonMouse.x);
-            let arg2 = (positionGranat.y - positonMouse.y) * (positionGranat.y - positonMouse.y);
-            let isInside = Math.sqrt(arg1 + arg2);
-            if (isInside < 15) {
-                wormove[i].weapon.isInside = true;
+    if(mouseUse == false){
+        for (let i = 0; i < wormove.length; i++) {
+            if (wormove[i].playing == true && wormove[i].weapon.bodyCreated == true) {
+                let positonMouse = wormove[i].weapon.mouse.position;
+    
+    
+                let positionGranat = wormove[i].weapon.bodyWeap.position;
+                let arg1 = (positionGranat.x - positonMouse.x) * (positionGranat.x - positonMouse.x);
+                let arg2 = (positionGranat.y - positonMouse.y) * (positionGranat.y - positonMouse.y);
+                let isInside = Math.sqrt(arg1 + arg2);
+                if (isInside < 50) {
+                    wormove[i].weapon.isInside = true;
+                }
+                break;
             }
         }
     }
+    
 }

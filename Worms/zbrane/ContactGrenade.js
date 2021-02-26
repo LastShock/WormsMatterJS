@@ -1,7 +1,7 @@
-class Rocket {
+class ContactGrenade {
 
     constructor(idWorma, x, y) {
-        this.name = "Rocket";
+        this.name = "Contact Grenade";
 
         this.idWorm = idWorma;
         this.granatX = x + 15;
@@ -73,7 +73,7 @@ class Rocket {
             image(imgRedGr, - 10, - 5, this.r + 10, this.r + 10);
             pop();
 
-            if (this.grnInAir == true) {
+            if (this.grnInAir == true && windOn == true) {
                 Body.applyForce(this.bodyWeap, { x: this.bodyWeap.position.x, y: this.bodyWeap.position.y }, { x: wind, y: 0 });
 
             }
@@ -159,10 +159,10 @@ class Rocket {
                     wormove[i].walkingDirection = 1;
                     wormove[i].animaceJumpLeft = true;
                     setTimeout(() => {
-                        wormove[i].canCheck = true;
+                        wormove[i].canCheckWorm = true;
                     }, 800);
-                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -200 * random, y: -400 * random });
-                    let dmg = random * 30;
+                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -200 * random, y: -300 * random });
+                    let dmg = random * 35;
                     dmg = Math.trunc(dmg)
                     wormove[i].hp -= dmg;
 
@@ -176,10 +176,10 @@ class Rocket {
                     wormove[i].walkingDirection = 0;
                     wormove[i].animaceJumpRight = true;
                     setTimeout(() => {
-                        wormove[i].canCheck = true;
+                        wormove[i].canCheckWorm = true;
                     }, 800);
-                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 200 * random, y: -400 * random });
-                    let dmg = random * 30;
+                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 200 * random, y: -300 * random });
+                    let dmg = random * 35;
                     dmg = Math.trunc(dmg)
                     wormove[i].hp -= dmg;
 
@@ -197,7 +197,7 @@ class Rocket {
 
                     var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
 
-                    if (collision.collided && document.cookie !="off") {
+                    if (collision.collided && document.cookie != "off") {
                         random.destroyPol(map[mapPiece], positionGranat.x, positionGranat.y)
 
                     }
@@ -213,7 +213,7 @@ class Rocket {
         wormove[idWorm].weapon.bodyCreated = false;
         wormove[idWorm].weapon.throw = false;
         wormove[idWorm].weapon.inAir = false;
-        if(this.bodyWeap){
+        if (this.bodyWeap) {
             Matter.Composite.remove(world, this.bodyWeap)
         }
     }
