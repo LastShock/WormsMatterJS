@@ -23,6 +23,8 @@ class ContactGrenade {
         this.isInside = false;
 
         this.bodyCreated = false;
+
+        this.didHit = false;
     }
 
     show() {
@@ -41,9 +43,13 @@ class ContactGrenade {
         }
         else if (this.throw == true && this.bodyCreated == false) {
             this.bodyCreated = true;
-            this.bodyWeap = Matter.Bodies.circle(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 20, this.r / 2 + 10);
+            this.bodyWeap = Matter.Bodies.circle(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 20, this.r / 2);
             this.bodyWeap.mass = 500;
-            this.bodyWeap.restitution = 0.4;
+            this.bodyWeap.restitution = 0.1;
+            this.bodyWeap.friction = 1;
+            this.bodyWeap.frictionStatic = 1;
+
+
 
             Matter.World.add(world, this.bodyWeap);
 
@@ -59,6 +65,8 @@ class ContactGrenade {
 
             World.add(world, this.mConstraint);
 
+
+
         }
         else if (this.throw == true && this.bodyCreated == true) {
             Matter.Body.setPosition(wormove[this.idWorm].body, wormove[this.idWorm].position)
@@ -70,25 +78,32 @@ class ContactGrenade {
             translate(this.bodyWeap.position.x, this.bodyWeap.position.y);
             rotate(angle);
             fill('rgb(240,230,140)');
-            image(imgRedGr, - 10, - 5, this.r + 10, this.r + 10);
+            image(imgRedGr, -5, - 5, this.r + 10, this.r + 10);
             pop();
 
-            if (this.grnInAir == true && windOn == true) {
+            if (this.grnInAir == true) {
                 Body.applyForce(this.bodyWeap, { x: this.bodyWeap.position.x, y: this.bodyWeap.position.y }, { x: wind, y: 0 });
 
             }
 
 
-            if (this.inAir == true) {
+            if (this.inAir === true) {
                 for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
                     if (map[mapPiece] != null) {
                         var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
-                        if (collision.collided) {
-                            this.explode(this.idWorm)
+                        if (collision.collided && this.didHit === false) {
+                            this.didHit = true;
+                            setTimeout(() => {
+                                this.explode(this.idWorm)
+
+                            }, 75)
+
+
                         }
                     }
                 }
             }
+
             for (let worm = 0; worm < wormove.length; worm++) {
                 var collision = Matter.SAT.collides(wormove[worm].body, this.bodyWeap)
                 if (collision.collided) {
@@ -119,16 +134,18 @@ class ContactGrenade {
         pop();
     }
     explode(idWorm) {
-
+        console.log("boom")
         audioExplode.play();
 
-        this.exploded = true;
         this.explosionX = this.bodyWeap.position.x;
         this.explosionY = this.bodyWeap.position.y;
+        this.exploded = true;
+
 
         setTimeout(() => {
             this.exploded = false;
         }, 500)
+
 
         let positionGranat = this.bodyWeap.position;
 
@@ -140,7 +157,7 @@ class ContactGrenade {
 
         Matter.Composite.remove(world, wormove[idWorm].weapon.bodyWeap)
 
-        let radius = 150;
+        let radius = 125;
 
 
 
@@ -155,14 +172,15 @@ class ContactGrenade {
                         wormove[i].staticWorm = false;
                     }
                     audioOuch.play();
-                    let random = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
+                    let dmgImpact = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
                     wormove[i].walkingDirection = 1;
                     wormove[i].animaceJumpLeft = true;
                     setTimeout(() => {
                         wormove[i].canCheckWorm = true;
                     }, 800);
-                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -200 * random, y: -300 * random });
-                    let dmg = random * 35;
+                    console.log(dmgImpact)
+                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -100 * dmgImpact, y: -300 * dmgImpact });
+                    let dmg = dmgImpact * 35;
                     dmg = Math.trunc(dmg)
                     wormove[i].hp -= dmg;
 
@@ -172,14 +190,14 @@ class ContactGrenade {
                         wormove[i].staticWorm = false;
                     }
                     audioOuch.play();
-                    let random = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
+                    let dmgImpact = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
                     wormove[i].walkingDirection = 0;
                     wormove[i].animaceJumpRight = true;
                     setTimeout(() => {
                         wormove[i].canCheckWorm = true;
                     }, 800);
-                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 200 * random, y: -300 * random });
-                    let dmg = random * 35;
+                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 100 * dmgImpact, y: -300 * dmgImpact });
+                    let dmg = dmgImpact * 35;
                     dmg = Math.trunc(dmg)
                     wormove[i].hp -= dmg;
 
@@ -198,7 +216,7 @@ class ContactGrenade {
                     var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
 
                     if (collision.collided && document.cookie != "off") {
-                        random.destroyPol(map[mapPiece], positionGranat.x, positionGranat.y)
+                        destruction.destroyPol(map[mapPiece], positionGranat.x, positionGranat.y)
 
                     }
                 }
@@ -207,16 +225,9 @@ class ContactGrenade {
         }
 
 
+        this.didHit = false;
+    }
 
-    }
-    removeBody(idWorm) {
-        wormove[idWorm].weapon.bodyCreated = false;
-        wormove[idWorm].weapon.throw = false;
-        wormove[idWorm].weapon.inAir = false;
-        if (this.bodyWeap) {
-            Matter.Composite.remove(world, this.bodyWeap)
-        }
-    }
     checkTime(idWorm) {
         for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
             if (map && map[mapPiece] && map[mapPiece].body) {

@@ -23,7 +23,6 @@
     <div class="topnav" class="item1">
         <a href="index.html">Home</a>
         <a href="hra.html">Hra</a>
-        <a href = "hraWindOff.html">Hra bez vzduchu(lepší výkon)</a>
         <a href="dokumentace.html">Dokumentace</a>
         <a href="ovladani.html">Ovládání</a>
         <a class="active" href="mapCrt.html">Map Creator</a>
@@ -37,7 +36,7 @@
 
         <script>
             var entry;
-            var listLength=0;
+            var listLength = 0;
             // global vars
             var dragging = false, drawing = false, startPoint;
             var svg = d3.select('body').append('svg')
@@ -55,7 +54,7 @@
 
             svg.on('mouseup', function () {
                 document.getElementById("buttonAdd").disabled = true;
-                document.getElementById("textarea").value ="";
+                document.getElementById("textarea").value = "";
                 if (dragging) return;
                 d3.select("g").remove();
                 drawing = true;
@@ -93,7 +92,7 @@
                 for (let random = 0; random < points.length; random++) {
                     value += Math.trunc(points[random][0]) + "," + Math.trunc(points[random][1]) + ", "
                 }
-                value += "osa X, osa Y);";
+                value += "',osa X, osa Y);";
 
                 document.getElementById('textarea').value = value;
                 document.getElementById("buttonAdd").disabled = false;
@@ -178,7 +177,7 @@
 
 
             }
-            
+
         </script>
 
 

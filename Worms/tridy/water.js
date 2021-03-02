@@ -18,7 +18,7 @@ class Water {
             else {
 
             }
-        }, 3000);
+        }, 30000);
     }
 
     show() {

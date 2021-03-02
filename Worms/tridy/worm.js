@@ -4,7 +4,7 @@ class Worm {
     this.y = y;
     this.width = 13;
     this.height = 15;
-    this.textureMoveX = 10;
+    this.textureMoveX = 8;
     this.textureMoveY = 23;
     this.imgEnlargeX = 20;
     this.imgEnlargeY = 15;
@@ -30,18 +30,16 @@ class Worm {
     this.attack = false;
     this.canCheckWorm = false;
 
-    this.body = Matter.Bodies.rectangle(
-      this.x,
-      this.y,
-      this.width,
-      this.height
-    );
+    this.body = Matter.Bodies.rectangle(this.x, this.y, this.width, this.height);
     this.body.tension = 1;
     this.body.mass = 10000;
-    Matter.World.add(world, this.body);
-    this.body.friction = 0.5;
+    this.body.friction = 1;
     this.body.restitution = 0;
     this.body.frictionStatic = 0.8;
+    Matter.Body.setInertia(this.body, 200)
+
+    Matter.World.add(world, this.body);
+
 
     this.maxY = 0;
     this.Ystart = 0;
@@ -63,12 +61,7 @@ class Worm {
     document.onkeydown = checkKey;
 
     function checkKey(e) {
-      if (
-        play == true &&
-        attack == false &&
-        weapon.throw == false &&
-        thisObject.keyboardDis == false
-      ) {
+      if (play == true && attack == false && weapon.throw == false && thisObject.keyboardDis == false) {
         e = e || window.event;
 
         if (e.keyCode == "32" && thisObject.move == true) {
@@ -129,7 +122,7 @@ class Worm {
                 thisObject.canCheckWorm = false;
                 setTimeout(function () {
                   thisObject.keyboardDis = false;
-                }, 1500);
+                }, 1000);
                 setTimeout(() => {
                   thisObject.canCheckWorm = true;
                 }, 200);
@@ -155,7 +148,7 @@ class Worm {
 
                 setTimeout(function () {
                   thisObject.keyboardDis = false;
-                }, 1500);
+                }, 1000);
                 setTimeout(() => {
                   thisObject.canCheckWorm = true;
                 }, 200);
@@ -205,20 +198,22 @@ class Worm {
   }
   checkPosition() {
     const pos = this.body.position;
+    if (pos.y > 720) {
 
-    if (pos.y > 740) {
       audioFalling.play();
       pos.x = -500 * this.id;
       Matter.Composite.remove(world, this.body);
       this.body.isStatic = true;
       this.alive = false;
+
       this.SwapWorm(this.id);
+      this.hp = 0;
     }
     else if (pos.y >= 720 - water) {
       pos.x = -500 * this.id;
+      this.hp = 0;
       Matter.Composite.remove(world, this.body);
       if (this.playing == false) {
-        this.weapon.removeBody(this.id);
         this.body.isStatic = true;
         this.alive = false;
       }
@@ -229,6 +224,7 @@ class Worm {
         this.alive = false;
         this.SwapWorm(this.id);
       }
+
     }
     else if (this.hp <= 0) {
       pos.x = -500 * this.id;
@@ -237,6 +233,7 @@ class Worm {
       this.body.isStatic = true;
       this.alive = false;
       this.SwapWorm(this.id);
+
     }
   }
   show() {
@@ -252,6 +249,7 @@ class Worm {
         this.checkTeam();
         this.controls();
         this.showTime();
+        this.showTeamHpBar();
       }
       const pos = this.body.position;
       this.showHP();
@@ -325,6 +323,7 @@ class Worm {
     }
   }
   SwapWorm(idWorm) {
+    this.checkTeam();
     this.move = false;
     mouseUse = false;
 
@@ -348,17 +347,18 @@ class Worm {
       if (wormove[i].team != team) {
         setTimeout(() => {
           wormove[i].keyboardDis = false;
-        }, 1000);
+        }, 200);
 
         wormove[i].staticWorm = false;
         wormove[i].keyboardDis = true;
         wormove[i].playing = true;
         wormove[i].attack = false;
+        this.checkTeam();
+
         break;
       }
       Body.applyForce(this.body, { x: this.body.position.x, y: this.body.position.y }, { x: 0, y: - 1 })
     }
-    this.checkTeam();
 
   }
   checkTeam() {
@@ -387,5 +387,37 @@ class Worm {
         }
       }
     }
+  }
+  showTeamHpBar() {
+
+
+    let hpTeam1 = 0;
+    let hpTeam2 = 0;
+
+    let wormsHpOnTeam = 100 * (wormove.length / 2);
+    wormove.forEach(worm => {
+
+      if (worm.team === 1) {
+        hpTeam1 += worm.hp;
+      }
+      else {
+        hpTeam2 += worm.hp;
+      }
+    })
+    let teamHpPercent = (hpTeam1 / wormsHpOnTeam) * 100;
+
+    push();
+    fill('rgb(255,0,0)');
+    rect(canvasWidth / 2 - 150, 0, (300 / 100) * teamHpPercent, 15);
+    pop();
+
+
+    teamHpPercent = (hpTeam2 / wormsHpOnTeam) * 100;
+
+    push();
+    fill('rgb(0,0,255)');
+    rect(canvasWidth / 2 - 150, 15, (300 / 100) * teamHpPercent, 15);
+    pop();
+
   }
 }

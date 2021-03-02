@@ -85,7 +85,7 @@ class Granat {
             pop();
 
 
-            if (this.grnInAir == true && windOn == true) {
+            if (this.grnInAir == true) {
                 Body.applyForce(this.bodyWeap, { x: this.bodyWeap.position.x, y: this.bodyWeap.position.y }, { x: wind, y: 0 });
 
             }
@@ -93,9 +93,9 @@ class Granat {
 
 
             if (this.inAir == true) {
-               
 
-               
+
+
                 for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
                     if (map[mapPiece] != null) {
 
@@ -160,7 +160,7 @@ class Granat {
         wormove[idWorm].weapon.inAir = false;
 
 
-        let radius = 150;
+        let radius = 75;
         let dmgDone = false;
 
 
@@ -177,14 +177,14 @@ class Granat {
                             wormove[i].staticWorm = false;
                         }
                         audioOuch.play();
-                        let random = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
+                        let dmgImpact = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
                         wormove[i].walkingDirection = 1;
                         wormove[i].animaceJumpLeft = true;
                         setTimeout(() => {
                             wormove[i].canCheckWorm = true;
                         }, 800);
-                        Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -100 * random, y: -300 * random });
-                        let dmg = random * 30;
+                        Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -50 * dmgImpact, y: -150 * dmgImpact });
+                        let dmg = dmgImpact * 30;
                         dmg = Math.trunc(dmg)
                         wormove[i].hp -= dmg;
                         dmgDone == true;
@@ -195,14 +195,14 @@ class Granat {
                             wormove[i].staticWorm = false;
                         }
                         audioOuch.play();
-                        let random = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
+                        let dmgImpact = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
                         wormove[i].walkingDirection = 0;
                         wormove[i].animaceJumpRight = true;
                         setTimeout(() => {
                             wormove[i].canCheckWorm = true;
                         }, 800);
-                        Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 100 * random, y: -300 * random });
-                        let dmg = random * 30;
+                        Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 50 * dmgImpact, y: -150 * dmgImpact });
+                        let dmg = dmgImpact * 30;
                         dmg = Math.trunc(dmg)
                         wormove[i].hp -= dmg;
                         dmgDone == true;
@@ -226,7 +226,7 @@ class Granat {
                     var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
 
                     if (collision.collided && document.cookie != "off") {
-                        random.destroyPol(map[mapPiece], positionGranat.x, positionGranat.y)
+                        destruction.destroyPol(map[mapPiece], positionGranat.x, positionGranat.y)
 
                     }
                 }
