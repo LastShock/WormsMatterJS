@@ -50,6 +50,7 @@ let alertDone = 0;
 let isGameOver = false;
 let waterClass = new Water();
 
+let buggyclick = false;
 let mouseDis = false;
 let mouseUse = false;
 
@@ -82,7 +83,7 @@ let speak = false;
 
 let canvas;
 let canvasWidth = 1520;
-let canvasHeigh = 705;
+let canvasHeight = 705;
 
 let imgGr;
 let bodyGround;
@@ -129,7 +130,7 @@ function setup() {
     }, 180000);
 
 
-    canvas = createCanvas(canvasWidth, canvasHeigh);
+    canvas = createCanvas(canvasWidth, canvasHeight);
     engine = Engine.create();
     engine.positionIterations = 12;
 
@@ -160,7 +161,7 @@ function setup() {
         { name: "Václav", taken: false }
     ];
     let chooseTeam = false;
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 8; i++) {
         let indexPosition = Math.floor(Math.random() * startingPosition.length);
 
         let positionStart = startingPosition[indexPosition];
@@ -183,12 +184,12 @@ function setup() {
 
     }
 
-
-
-    wormove[0].playing = true;
-    wormove[0].staticWorm = false;
-    wormove[0].attack = false;
-    wormove[0].keyboardDis = true;
+    let indexStarting = Math.floor(Math.random() * wormove.length);
+    wormove[indexStarting].playing = true;
+    wormove[indexStarting].staticWorm = false;
+    wormove[indexStarting].attack = false;
+    wormove[indexStarting].keyboardDis = true;
+    wormove[indexStarting].SwapWorm(indexStarting);
     setTimeout(() => { wormove[0].keyboardDis = false; }, 1000)
 
     time1 = new Date();
@@ -215,12 +216,13 @@ function setup() {
 
 }
 
+
 function draw() {
 
     if (pause1 == false) {
         frameRate(50);
         Matter.Engine.update(engine)
-        engine.velocityIterations = 3;
+        engine.velocityIterations = 6;
         background(bg);
         if (speak == false) {
             setTimeout(() => {
@@ -230,6 +232,12 @@ function draw() {
             speak = true;
         }
 
+
+        for (let i = 0; i < map.length; i++) {
+            if (map[i] != null) {
+                map[i].show();
+            }
+        }
         for (let i = 0; i < wormove.length; i++) {
             if (wormove[i] != null && wormove[i].alive != false) {
                 if (wormove[i].weapon.exploded == true) {
@@ -242,17 +250,14 @@ function draw() {
             }
 
         }
-        for (let i = 0; i < map.length; i++) {
-            if (map[i] != null) {
-                map[i].show();
-            }
-        }
-        wormove.forEach(worm => worm.show())
+        wormove.forEach(worm => {
+            worm.show()
+
+        })
         waterClass.show();
         showWind();
 
     }
-
 
 
 

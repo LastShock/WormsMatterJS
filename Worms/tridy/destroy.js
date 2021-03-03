@@ -16,6 +16,11 @@ class Destroy {
             [503, 375]
         ]
 
+        /*this.hole = [
+            [574, 322], [558, 312], [550, 284], [574, 240], [614, 229], [636, 248], [649, 289], [630, 321], [586, 328]
+
+        ]*/
+        console.log(this.hole)
         let random = "";
         for (let i = 0; i < this.hole.length; i++) {
             random += this.hole[i][0] + "," + this.hole[i][1] + ","
@@ -85,7 +90,7 @@ class Destroy {
             }
 
             let randomak = Matter.Vertices.fromPath(path);
-           
+
             let newPolygon = [];
             for (let i = 0; i < randomak.length; i++) {
                 newPolygon[i] = [randomak[i].x, randomak[i].y]
@@ -96,21 +101,20 @@ class Destroy {
             let id = polygon.id;
             let polX = polygon.x;
             let polY = polygon.y;
-            if(o==0){
+            if (o == 0) {
                 map[polygon.id] = new Map(path, polX + xMove, polY + yMove)
                 map[polygon.id].id = id
-    
+
             }
-            else if(o==1)
-            {
-                map[map.length] = new Map(path, polX +xMove-0.5 , polY + yMove)
+            else if (o == 1) {
+                map[map.length] = new Map(path, polX + xMove - 0.5, polY + yMove)
             }
-           
+
 
 
             Matter.Composite.remove(world, this.body)
         }
-        
+
 
 
 

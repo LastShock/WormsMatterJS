@@ -10,7 +10,7 @@ class Water {
 
         }
         setTimeout(() => {
-            if (water < canvasHeigh / 2.8) {
+            if (water < canvasHeight / 2.8) {
 
 
                 this.waterGo();

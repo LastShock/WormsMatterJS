@@ -205,8 +205,10 @@ class Worm {
       Matter.Composite.remove(world, this.body);
       this.body.isStatic = true;
       this.alive = false;
+      if (this.playing = this.playing) {
+        this.SwapWorm(this.id);
+      }
 
-      this.SwapWorm(this.id);
       this.hp = 0;
     }
     else if (pos.y >= 720 - water) {
@@ -250,6 +252,7 @@ class Worm {
         this.controls();
         this.showTime();
         this.showTeamHpBar();
+        this.showPlaying(this.id);
       }
       const pos = this.body.position;
       this.showHP();
@@ -336,7 +339,6 @@ class Worm {
 
     this.attack = true;
     this.playing = false;
-    let team = wormove[idWorm].team;
 
     for (let i = idWorm; i <= wormove.length; i++) {
       if (i == wormove.length) {
@@ -344,7 +346,7 @@ class Worm {
         continue;
       }
 
-      if (wormove[i].team != team) {
+      if (wormove[i].id != idWorm) {
         setTimeout(() => {
           wormove[i].keyboardDis = false;
         }, 200);
@@ -395,6 +397,7 @@ class Worm {
     let hpTeam2 = 0;
 
     let wormsHpOnTeam = 100 * (wormove.length / 2);
+
     wormove.forEach(worm => {
 
       if (worm.team === 1) {
@@ -420,4 +423,16 @@ class Worm {
     pop();
 
   }
+  showPlaying(idWorm) {
+    let position = wormove[idWorm].body.position
+
+    push()
+    var angle = atan2(position.y - position.y - 100, position.x - position.x - 100);
+    translate(position.x, position.y - 45);
+    rotate(angle - HALF_PI + 0.8);
+    triangle(-10 * 0.5, 10, 10 * 0.5, 10, 0, -10 / 2);
+    pop();
+
+  }
+
 }

@@ -6,9 +6,11 @@ class ContactGrenade {
         this.idWorm = idWorma;
         this.granatX = x + 15;
         this.granatY = y + 10;
+        this.enlargeGranate = 0;
+
 
         this.dmg = 30;
-        this.r = 10;
+        this.r = 20;
 
         this.slingshot;
 
@@ -34,10 +36,16 @@ class ContactGrenade {
             push();
             fill('rgb(240,230,140)');
             if (wormove[this.idWorm].walkingDirection == 0) {
-                image(imgRedGr, wormove[this.idWorm].body.position.x + 17, wormove[this.idWorm].body.position.y - 23, this.r + 10, this.r + 10);
+                image(imgRedGr, wormove[this.idWorm].body.position.x + 17, wormove[this.idWorm].body.position.y - 23, this.r + this.enlargeGranate, this.r + this.enlargeGranate);
             }
             else if (wormove[this.idWorm].walkingDirection == 1) {
-                image(imgRedGr, wormove[this.idWorm].body.position.x - 5, wormove[this.idWorm].body.position.y - 23, this.r + 10, this.r + 10);
+                image(imgRedGr, wormove[this.idWorm].body.position.x - 5, wormove[this.idWorm].body.position.y - 23, this.r + this.enlargeGranate, this.r + this.enlargeGranate);
+            }
+            if (wormove[this.idWorm].animaceJumpRight) {
+                image(imgRedGr, wormove[this.idWorm].body.position.x + 17, wormove[this.idWorm].body.position.y - 23, this.r + this.enlargeGranate, this.r + this.enlargeGranate);
+            }
+            else if (wormove[this.idWorm].animaceJumpLeft) {
+                image(imgRedGr, wormove[this.idWorm].body.position.x - 5, wormove[this.idWorm].body.position.y - 23, this.r + this.enlargeGranate, this.r + this.enlargeGranate);
             }
             pop();
         }
@@ -61,7 +69,7 @@ class ContactGrenade {
             this.mouse.pixelRatio = pixelDensity();
 
             this.mConstraint = MouseConstraint.create(engine, options);
-            this.slingshot = new SlingShot(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 46, this.bodyWeap, this.mouse);
+            this.slingshot = new SlingShot(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 46, this.bodyWeap, this.mouse, this.idWorm);
 
             World.add(world, this.mConstraint);
 
@@ -78,12 +86,17 @@ class ContactGrenade {
             translate(this.bodyWeap.position.x, this.bodyWeap.position.y);
             rotate(angle);
             fill('rgb(240,230,140)');
-            image(imgRedGr, -5, - 5, this.r + 10, this.r + 10);
+            image(imgRedGr, -11, -7, this.r + this.enlargeGranate, this.r + this.enlargeGranate);
             pop();
 
             if (this.grnInAir == true) {
                 Body.applyForce(this.bodyWeap, { x: this.bodyWeap.position.x, y: this.bodyWeap.position.y }, { x: wind, y: 0 });
-
+                if (
+                    this.bodyWeap.position.x > canvasWidth ||
+                    this.bodyWeap.position.y > canvasHeight ||
+                    this.bodyWeap.position.x < 0 ||
+                    this.bodyWeap.position.y < 0)
+                    this.explode(this.idWorm);
             }
 
 
@@ -96,7 +109,7 @@ class ContactGrenade {
                             setTimeout(() => {
                                 this.explode(this.idWorm)
 
-                            }, 75)
+                            }, 30)
 
 
                         }
@@ -111,7 +124,7 @@ class ContactGrenade {
                     Body.setVelocity(wormove[worm].body, { x: 0, y: -0 });
                     setTimeout(() => {
                         wormove[worm].staticWorm = false;
-                    }, 200)
+                    }, 100)
                 }
             }
 
@@ -120,10 +133,13 @@ class ContactGrenade {
         }
 
         if (this.checkTime(this.idWorm) && this.bodyCreated == true) {
-            Matter.Composite.remove(world, this.bodyWeap)
-            this.bodyCreated = false;
-            this.throw = false;
-            this.inAir = false;
+            if (this.inAir != true) {
+                Matter.Composite.remove(world, this.bodyWeap)
+                this.bodyCreated = false;
+                this.throw = false;
+                this.inAir = false;
+            }
+
             wormove[this.idWorm].SwapWorm(this.idWorm);
         }
     }
@@ -134,7 +150,7 @@ class ContactGrenade {
         pop();
     }
     explode(idWorm) {
-        console.log("boom")
+
         audioExplode.play();
 
         this.explosionX = this.bodyWeap.position.x;
@@ -158,6 +174,7 @@ class ContactGrenade {
         Matter.Composite.remove(world, wormove[idWorm].weapon.bodyWeap)
 
         let radius = 125;
+        let dmgDone = false;
 
 
 
@@ -166,40 +183,50 @@ class ContactGrenade {
             let arg2 = (wormove[i].body.position.y - positionGranat.y) * (wormove[i].body.position.y - positionGranat.y);
             let isInside = Math.sqrt(arg1 + arg2);
 
-            if (isInside <= radius) {
+            if (isInside <= radius && dmgDone == false) {
                 if (positionGranat.x > wormove[i].body.position.x) {
-                    if (wormove[i].staticWorm == true) {
-                        wormove[i].staticWorm = false;
+                    if (wormove[i].body.isStatic == true) {
+                        wormove[i].body.isStatic = false;
                     }
                     audioOuch.play();
                     let dmgImpact = 1 - (positionGranat.x - wormove[i].body.position.x) / radius;
+                    wormove[i].staticWorm = false;
+
                     wormove[i].walkingDirection = 1;
                     wormove[i].animaceJumpLeft = true;
                     setTimeout(() => {
                         wormove[i].canCheckWorm = true;
                     }, 800);
-                    console.log(dmgImpact)
-                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -100 * dmgImpact, y: -300 * dmgImpact });
-                    let dmg = dmgImpact * 35;
+                    console.log("Worm:" + i + "zasažen za " + dmgImpact)
+
+                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -125 * dmgImpact, y: -350 * dmgImpact });
+                    let dmg = dmgImpact * 40;
                     dmg = Math.trunc(dmg)
                     wormove[i].hp -= dmg;
+                    dmgDone == true;
+
 
                 }
                 else if (positionGranat.x < wormove[i].body.position.x) {
-                    if (wormove[i].staticWorm == true) {
-                        wormove[i].staticWorm = false;
+                    if (wormove[i].body.isStatic == true) {
+                        wormove[i].body.isStatic = false;
                     }
                     audioOuch.play();
                     let dmgImpact = 1 + (positionGranat.x - wormove[i].body.position.x) / radius;
+                    wormove[i].staticWorm = false;
+
                     wormove[i].walkingDirection = 0;
                     wormove[i].animaceJumpRight = true;
                     setTimeout(() => {
                         wormove[i].canCheckWorm = true;
                     }, 800);
-                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 100 * dmgImpact, y: -300 * dmgImpact });
-                    let dmg = dmgImpact * 35;
+                    console.log("Worm:" + i + "zasažen za " + dmgImpact)
+
+                    Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 125 * dmgImpact, y: -350 * dmgImpact });
+                    let dmg = dmgImpact * 40;
                     dmg = Math.trunc(dmg)
                     wormove[i].hp -= dmg;
+                    dmgDone == true;
 
 
                 }
@@ -209,20 +236,7 @@ class ContactGrenade {
 
 
         }
-        if (destructionOn == true) {
-            for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
-                if (map[mapPiece] != null) {
 
-                    var collision = Matter.SAT.collides(map[mapPiece].body, this.bodyWeap)
-
-                    if (collision.collided && document.cookie != "off") {
-                        destruction.destroyPol(map[mapPiece], positionGranat.x, positionGranat.y)
-
-                    }
-                }
-            }
-
-        }
 
 
         this.didHit = false;
