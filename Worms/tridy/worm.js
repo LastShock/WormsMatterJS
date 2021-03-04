@@ -45,9 +45,13 @@ class Worm {
     this.Ystart = 0;
     this.falling = false;
     this.move = false;
+
+    this.falldmgOff = true;
     setTimeout(() => {
       this.static();
-    }, 10000);
+      this.hp = 100;
+
+    }, 1000);
   }
   controls() {
     let id = this.id;
@@ -64,7 +68,7 @@ class Worm {
       if (play == true && attack == false && weapon.throw == false && thisObject.keyboardDis == false) {
         e = e || window.event;
 
-        if (e.keyCode == "32" && thisObject.move == true) {
+        if (e.keyCode == "16" && thisObject.move == true) {
           // throw
           for (let mapPiece = 0; mapPiece < map.length; mapPiece++) {
             if (map[mapPiece] != null) {
@@ -74,6 +78,7 @@ class Worm {
                 thisObject.position = { x: thisObject.body.position.x, y: thisObject.body.position.y };
                 break;
               }
+
             }
           }
         }
@@ -172,6 +177,9 @@ class Worm {
   showTime() {
     time2 = new Date();
     let timeRemaning = (time1 - time2) / 1000;
+    if (timeRemaning < 1) {
+      this.SwapWorm(this.id);
+    }
     fill(255, 0, 0);
     textSize(40);
     text(Math.trunc(timeRemaning), 1450, 32);
@@ -290,6 +298,7 @@ class Worm {
         if (map[mapPiece] != null) {
           var collision = Matter.SAT.collides(map[mapPiece].body, this.body);
           if (collision.collided) {
+
             if (this.canCheckWorm == true) {
               if (this.animaceJumpLeft) this.animaceJumpLeft = false;
               if (this.animaceJumpRight) this.animaceJumpRight = false;
@@ -315,6 +324,7 @@ class Worm {
         }
         if (collision.collided == false && this.falling == false) {
           this.keyboardDis = true;
+          this.staticWorm == false;
 
           this.falling = true;
           this.maxY = this.body.position.y;
@@ -373,7 +383,8 @@ class Worm {
     if (aliveTeam == 0) {
       if (isGameOver == true) {
         alert("Team: " + this.team + " prohrál");
-        location.reload();
+
+        startGame();
       }
       isGameOver = true;
     }
@@ -383,7 +394,8 @@ class Worm {
       if (map && map[mapPiece] && map[mapPiece].body) {
         var collision = Matter.SAT.collides(map[mapPiece].body, this.body);
         if (collision.collided) {
-          if (time2 >= time1) {
+          let timeRemaning = (time1 - time2) / 1000;
+          if (timeRemaning < 1) {
             this.SwapWorm(idWorm);
           }
         }

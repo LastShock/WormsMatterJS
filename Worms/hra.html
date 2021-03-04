@@ -1,53 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/menu.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/menu.css" />
     <script src="libraries/matter.js"></script>
     <script src="libraries/p5.js"></script>
     <script src="libraries/decomp.js"></script>
     <script src="https://fpcdn.s3.amazonaws.com/apps/polygon-tools/0.4.6/polygon-tools.min.js"></script>
-    <link rel="icon" href="textury/defBig.png">
+    <link rel="icon" href="textury/defBig.png" />
     <style>
-        canvas {
+      canvas {
+        margin: auto;
+        display: block;
+      }
 
-            margin: auto;
-            display: block;
-        }
+      body {
+        background-color: #333;
+      }
 
-        body {
-            background-color: #333;
-        }
+      .options {
+        margin-right: -200px;
+      }
 
-        .options {
-            margin-right: -480px;
-
-        }
-
-        button {
-            margin-top: 12px;
-        }
+      button {
+        margin-top: 12px;
+      }
     </style>
     <title>Worms are back! In your browser</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="topnav" class="item1">
-        <a href="index.html">Home</a>
-        <a class="active" href="hra.html">Hra</a>
-        <a href="dokumentace.html">Dokumentace</a>
-        <a href="ovladani.html">Ovládání</a>
-        <a href="mapCrt.html">Map Creator</a>
+      <a href="index.html">Home</a>
+      <a class="active" href="hra.html">Hra</a>
+      <a href="dokumentace.html">Dokumentace</a>
+      <a href="ovladani.html">Ovládání</a>
+      <a href="mapCrt.html">Map Creator</a>
 
-        <div class="options">
-            <button onclick="dmgOn()">Dekstrukce zap</button>
-            <button onclick="dmgOff()">Dekstrukce vyp</button>
-            <button onclick="location.reload()">Restart</button>
-
-
-        </div>
+      <div class="options">
+        <span style="color: white">Nahrát mapu:</span>
+        <input
+          style="margin-right: -150px"
+          type="file"
+          name="inputfile"
+          id="inputfile"
+        />
+        <span style="color: white" id="DestrukceInfo">Destrukce:</span>
+        <button onclick="dmgOn()">Dekstrukce zap</button>
+        <button onclick="dmgOff()">Dekstrukce vyp</button>
+        <button onclick="startGame(StartingMap, startingPositionDefined)">
+          Restart poslední mapy
+        </button>
+        <button onclick="startGame()">Restart</button>
+      </div>
     </div>
     <script src="zbrane/slingshot.js"></script>
     <script src="tridy/water.js"></script>
@@ -57,8 +63,5 @@
     <script src="tridy/map.js"></script>
     <script src="tridy/worm.js"></script>
     <script src="mainJs.js"></script>
-
-
-</body>
-
+  </body>
 </html>

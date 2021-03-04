@@ -61,6 +61,7 @@ class Granat {
             this.bodyWeap.frictionStatic = 1;
 
 
+
             this.mouse = Mouse.create(canvas.elt);
             const options = {
                 mouse: this.mouse
@@ -137,7 +138,11 @@ class Granat {
                 this.throw = false;
                 this.inAir = false;
             }
-
+            else {
+                this.bodyCreated = false;
+                this.throw = false;
+                this.inAir = false;
+            }
             wormove[this.idWorm].SwapWorm(this.idWorm);
         }
     }
@@ -193,7 +198,6 @@ class Granat {
                         setTimeout(() => {
                             wormove[i].canCheckWorm = true;
                         }, 800);
-                        console.log("Worm:" + i + "zasažen za " + dmgImpact)
 
                         Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -100 * dmgImpact, y: -300 * dmgImpact });
                         let dmg = dmgImpact * 30;
@@ -216,7 +220,6 @@ class Granat {
                         setTimeout(() => {
                             wormove[i].canCheckWorm = true;
                         }, 800);
-                        console.log("Worm:" + i + "zasažen za " + dmgImpact)
 
                         Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 100 * dmgImpact, y: -300 * dmgImpact });
                         let dmg = dmgImpact * 30;
@@ -268,7 +271,11 @@ class Granat {
             if (map && map[mapPiece] && map[mapPiece].body) {
                 var collision = Matter.SAT.collides(map[mapPiece].body, wormove[idWorm].body)
                 if (collision.collided) {
-                    if (time2 >= time1) {
+                    time2 = new Date();
+
+
+                    let timeRemaning = (time1 - time2) / 1000;
+                    if (timeRemaning < 1) {
                         return true;
                     }
                 }

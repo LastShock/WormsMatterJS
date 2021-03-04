@@ -16,11 +16,7 @@ class Destroy {
             [503, 375]
         ]
 
-        /*this.hole = [
-            [574, 322], [558, 312], [550, 284], [574, 240], [614, 229], [636, 248], [649, 289], [630, 321], [586, 328]
 
-        ]*/
-        console.log(this.hole)
         let random = "";
         for (let i = 0; i < this.hole.length; i++) {
             random += this.hole[i][0] + "," + this.hole[i][1] + ","
@@ -99,19 +95,18 @@ class Destroy {
             let yMove = PolygonTools.polygon.centroid(newPolygon)[1] - PolygonTools.polygon.centroid(polygomClass)[1];
 
             let id = polygon.id;
-            let polX = polygon.x;
-            let polY = polygon.y;
+            let polX = Math.abs(polygon.x);
+            let polY = Math.abs(polygon.y);
             if (o == 0) {
                 map[polygon.id] = new Map(path, polX + xMove, polY + yMove)
+                console.log(map[polygon.id])
                 map[polygon.id].id = id
 
             }
             else if (o == 1) {
                 map[map.length] = new Map(path, polX + xMove - 0.5, polY + yMove)
+                console.log(map[map.length])
             }
-
-
-
             Matter.Composite.remove(world, this.body)
         }
 
@@ -127,7 +122,6 @@ class Destroy {
                 randomPath += this.body.parts[i].vertices[r].x + " ," + this.body.parts[i].vertices[r].y + ",";
             }
         }
-        console.log(randomPath)
     }
     show() {
         push();

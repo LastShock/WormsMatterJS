@@ -197,7 +197,6 @@ class ContactGrenade {
                     setTimeout(() => {
                         wormove[i].canCheckWorm = true;
                     }, 800);
-                    console.log("Worm:" + i + "zasažen za " + dmgImpact)
 
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: -125 * dmgImpact, y: -350 * dmgImpact });
                     let dmg = dmgImpact * 40;
@@ -220,7 +219,6 @@ class ContactGrenade {
                     setTimeout(() => {
                         wormove[i].canCheckWorm = true;
                     }, 800);
-                    console.log("Worm:" + i + "zasažen za " + dmgImpact)
 
                     Body.applyForce(wormove[i].body, { x: wormove[i].body.position.x, y: wormove[i].body.position.y }, { x: 125 * dmgImpact, y: -350 * dmgImpact });
                     let dmg = dmgImpact * 40;

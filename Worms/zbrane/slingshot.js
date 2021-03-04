@@ -161,8 +161,7 @@ function mousePressed() {
     buggyclick = false;
 
     for (let i = 0; i < wormove.length; i++) {
-        console.log("log1 : " + wormove[i].playing == true)
-        console.log("log2 : " + wormove[i].weapon.bodyCreated == true)
+
 
         if (wormove[i].playing == true && wormove[i].weapon.bodyCreated == true) {
             let positonMouse = wormove[i].weapon.mouse.position;

@@ -6,6 +6,7 @@
 }
 .item3 {
   grid-area: main;
+  margin-bottom: 40px;
 }
 .item4 {
   grid-area: image;
@@ -31,12 +32,7 @@
 
 .item3 {
   width: 800px;
-  margin-top: 100px;
   margin-left: 30px;
-}
-
-.item4 {
-  margin-top: 80px;
 }
 
 body {
@@ -79,10 +75,4 @@ p {
   height: 50px;
   width: 100%;
   background-color: #333;
-}
-#cont {
-  margin-left: 200px;
-}
-#contrl {
-  margin-top: -35px;
 }
