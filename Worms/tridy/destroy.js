@@ -28,7 +28,35 @@ class Destroy {
         Matter.World.add(world, this.body);
 
     }
-    destroyPol(polygon, explosionX, explosionY) {
+    destroyPol(polygon, explosionX, explosionY, configBool) {
+        if (configBool == true) {
+            this.hole = [
+                [385, 477],
+                [385, 482],
+                [385, 483],
+                [390, 483],
+                [390, 472]
+
+            ]
+        }
+        else {
+            this.hole = [
+                [484, 367],
+                [481, 359],
+                [479, 351],
+                [479, 345],
+                [484, 339],
+                [492, 336],
+                [497, 335],
+                [507, 335],
+                [513, 338],
+                [516, 349],
+                [516, 357],
+                [514, 367],
+                [503, 375]
+            ]
+
+        }
         Matter.Composite.remove(world, this.body)
 
         let random = "";
@@ -115,6 +143,7 @@ class Destroy {
 
 
     }
+
     showVerticies() {
         let randomPath = "";
         for (let i = 0; i < this.body.parts.length; i++) {

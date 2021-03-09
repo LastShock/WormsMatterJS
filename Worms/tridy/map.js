@@ -32,7 +32,6 @@ class Map {
 
 
 
-
             let minBeforeX = 20000;
             let minAfterX = 20000;
             let minBeforeY = 20000;
@@ -52,6 +51,15 @@ class Map {
             this.body.isStatic = true;
             this.body.friction = 0.8;
             Matter.World.add(world, this.body);
+            setTimeout(() => {
+                let helper = new Destroy();
+                console.log(map[this.id - 1])
+                helper.destroyPol(map[this.id], this.x, this.y, true)
+                config = null;
+
+            }, 200)
+
+
             this.P5x = 0
             this.P5y = 0
 
@@ -63,6 +71,8 @@ class Map {
             this.body.friction = 0.8;
 
             Matter.World.add(world, this.body);
+
+
             let minBeforeX = 20000;
             let minAfterX = 20000;
             let minBeforeY = 20000;
@@ -80,8 +90,6 @@ class Map {
             this.P5y = minAfterY - minBeforeY
 
         }
-
-
 
 
     }

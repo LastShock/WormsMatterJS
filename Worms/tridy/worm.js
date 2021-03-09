@@ -229,7 +229,10 @@ class Worm {
       }
 
       if (this.playing == true) {
-        this.weapon.removeBody(this.id);
+        if (this.weapon.bodyCreated == true) {
+          this.weapon.removeBody(this.id);
+
+        }
         this.body.isStatic = true;
         this.alive = false;
         this.SwapWorm(this.id);
@@ -242,7 +245,10 @@ class Worm {
       audioDying.play();
       this.body.isStatic = true;
       this.alive = false;
-      this.SwapWorm(this.id);
+      if (this.playing == true) {
+        this.SwapWorm(this.id);
+
+      }
 
     }
   }
