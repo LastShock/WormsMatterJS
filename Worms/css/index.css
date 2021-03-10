@@ -1,9 +1,7 @@
 .item1 {
   grid-area: header;
 }
-.item2 {
-  grid-area: h1;
-}
+
 .item3 {
   grid-area: main;
   margin-bottom: 40px;
@@ -18,21 +16,16 @@
   display: grid;
   grid-template-areas:
     "header header header header header "
-    "h1 h1 h1 h1 h1"
+    "main main image image image"
     "main main image image image"
     "footer footer footer footer footer";
   grid-gap: 10px;
 }
 
-.item2 {
-  text-align: left;
-  width: 800px;
-  margin-left: 150px;
-}
-
 .item3 {
   width: 800px;
   margin-left: 30px;
+  margin-top: 100px;
 }
 
 body {

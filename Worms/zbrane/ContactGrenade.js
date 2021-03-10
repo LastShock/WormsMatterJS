@@ -59,6 +59,7 @@ class ContactGrenade {
 
 
 
+
             Matter.World.add(world, this.bodyWeap);
 
 
@@ -109,7 +110,7 @@ class ContactGrenade {
                             setTimeout(() => {
                                 this.explode(this.idWorm)
 
-                            }, 30)
+                            }, 40)
 
 
                         }

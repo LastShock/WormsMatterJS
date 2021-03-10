@@ -112,6 +112,7 @@ function mouseReleased() {
                 wormove[indexPlayingWorm].weapon.slingshot.detach()
             }, 20);
 
+
             setTimeout(() => {
                 mouseDis = false;
             }, 500);
