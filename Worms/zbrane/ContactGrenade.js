@@ -15,6 +15,8 @@ class ContactGrenade {
         this.slingshot;
 
         this.throw = false;
+        this.wasThrowed = false;
+
 
         this.inAir = false;
 
@@ -237,6 +239,7 @@ class ContactGrenade {
         }
 
 
+        this.wasThrowed = false;
 
         this.didHit = false;
     }

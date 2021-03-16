@@ -31,11 +31,14 @@ class SlingShot {
 
 
         if (this.isLimited == true) {
-            this.sling.stiffness = 0.15
-            this.sling.length = 0.5;
+            console.log(this.sling.length)
+            if (this.sling.length >= 30) {
+                this.sling.stiffness = 0.15
+                this.sling.length = 0.5;
+            }
             setTimeout(() => {
                 this.sling.bodyB = null;
-            }, 10)
+            }, 20)
         }
         else {
             this.sling.bodyB = null;
@@ -54,6 +57,10 @@ class SlingShot {
         if (buggyclick == true) {
             this.sling.stiffness = 1;
             this.sling.length = 1
+            setTimeout(() => {
+                this.sling.stiffness = 0.1;
+            })
+            buggyclick = false;
         }
         else if (this.sling.bodyB) {
             const posA = this.sling.pointA;
@@ -109,7 +116,9 @@ function mouseReleased() {
         if (wormove[indexPlayingWorm].weapon.throw != false && buggyclick == false && mouseUse == true) {
 
             setTimeout(() => {
-                wormove[indexPlayingWorm].weapon.slingshot.detach()
+                wormove[indexPlayingWorm].weapon.slingshot.detach();
+                wormove[indexPlayingWorm].weapon.bodyWeap.isSensor = false;
+
             }, 20);
 
 
@@ -117,11 +126,16 @@ function mouseReleased() {
                 mouseDis = false;
             }, 500);
             if (wormove[indexPlayingWorm].weapon.name == "granat") {
+                wormove[indexPlayingWorm].weapon.wasThrowed = true;
                 setTimeout(() => {
                     wormove[indexPlayingWorm].weapon.explode(indexPlayingWorm);
+
                 }, 2500);
             }
             else if (wormove[indexPlayingWorm].weapon.name = "Rocket") {
+                wormove[indexPlayingWorm].weapon.wasThrowed = true;
+
+
                 setTimeout(() => {
                     wormove[indexPlayingWorm].weapon.inAir = true;
                     wormove[indexPlayingWorm].weapon.grnInAir = true;

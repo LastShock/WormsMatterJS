@@ -16,9 +16,9 @@ class Granat {
         this.throw = false;
 
         this.exploded = false;
+        this.wasThrowed = false;
 
         this.inAir = false;
-        this.bodyvel;
 
         this.grnInAir = false;
 
@@ -59,6 +59,7 @@ class Granat {
             this.bodyWeap.restitution = 0.1;
             this.bodyWeap.friction = 1;
             this.bodyWeap.frictionStatic = 1;
+            this.bodyWeap.isSensor = true;
 
 
 
@@ -132,18 +133,21 @@ class Granat {
         }
 
         if (this.checkTime(this.idWorm) && this.bodyCreated == true) {
-            if (this.inAir != true) {
-                Matter.Composite.remove(world, this.bodyWeap)
-                this.bodyCreated = false;
-                this.throw = false;
-                this.inAir = false;
+            if (this.wasThrowed == false) {
+                if (this.inAir != true) {
+                    Matter.Composite.remove(world, this.bodyWeap)
+                    this.bodyCreated = false;
+                    this.throw = false;
+                    this.inAir = false;
+                }
+                else {
+                    this.bodyCreated = false;
+                    this.throw = false;
+                    this.inAir = false;
+                }
+                wormove[this.idWorm].SwapWorm(this.idWorm);
             }
-            else {
-                this.bodyCreated = false;
-                this.throw = false;
-                this.inAir = false;
-            }
-            wormove[this.idWorm].SwapWorm(this.idWorm);
+
         }
     }
     showExplosion() {
@@ -152,6 +156,8 @@ class Granat {
         pop();
     }
     explode(idWorm) {
+        this.wasThrowed = false;
+
         this.collidedWithWorm = false
         this.slingshot = null;
 

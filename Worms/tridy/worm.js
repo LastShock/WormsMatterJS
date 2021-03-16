@@ -219,7 +219,7 @@ class Worm {
 
       this.hp = 0;
     }
-    else if (pos.y >= 720 - water) {
+    else if (pos.y >= 720 - water + 5) {
       pos.x = -500 * this.id;
       this.hp = 0;
       Matter.Composite.remove(world, this.body);
@@ -342,40 +342,43 @@ class Worm {
     }
   }
   SwapWorm(idWorm) {
-    this.checkTeam();
-    this.move = false;
-    mouseUse = false;
+    if (this.weapon.wasThrowed == false) {
+      this.checkTeam();
+      this.move = false;
+      mouseUse = false;
 
-    time1 = new Date();
-    time1.setSeconds(time1.getSeconds() + swapTime);
+      time1 = new Date();
+      time1.setSeconds(time1.getSeconds() + swapTime);
 
-    setTimeout(() => {
-      this.static();
-    }, 5000);
+      setTimeout(() => {
+        this.static();
+      }, 5000);
 
-    this.attack = true;
-    this.playing = false;
+      this.attack = true;
+      this.playing = false;
 
-    for (let i = idWorm; i <= wormove.length; i++) {
-      if (i == wormove.length) {
-        i = -1;
-        continue;
+      for (let i = idWorm; i <= wormove.length; i++) {
+        if (i == wormove.length) {
+          i = -1;
+          continue;
+        }
+
+        if (wormove[i].id != idWorm) {
+          setTimeout(() => {
+            wormove[i].keyboardDis = false;
+          }, 200);
+
+          wormove[i].staticWorm = false;
+          wormove[i].keyboardDis = true;
+          wormove[i].playing = true;
+          wormove[i].attack = false;
+          this.checkTeam();
+
+          break;
+        }
+        Body.applyForce(this.body, { x: this.body.position.x, y: this.body.position.y }, { x: 0, y: - 1 })
       }
 
-      if (wormove[i].id != idWorm) {
-        setTimeout(() => {
-          wormove[i].keyboardDis = false;
-        }, 200);
-
-        wormove[i].staticWorm = false;
-        wormove[i].keyboardDis = true;
-        wormove[i].playing = true;
-        wormove[i].attack = false;
-        this.checkTeam();
-
-        break;
-      }
-      Body.applyForce(this.body, { x: this.body.position.x, y: this.body.position.y }, { x: 0, y: - 1 })
     }
 
   }

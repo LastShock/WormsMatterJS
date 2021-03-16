@@ -127,7 +127,6 @@ class Destroy {
             let polY = Math.abs(polygon.y);
             if (o == 0) {
                 map[polygon.id] = new Map(path, polX + xMove, polY + yMove)
-                console.log(map[polygon.id])
                 map[polygon.id].id = id
 
             }
