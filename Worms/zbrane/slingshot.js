@@ -29,9 +29,7 @@ class SlingShot {
 
     detach() {
 
-
         if (this.isLimited == true) {
-            console.log(this.sling.length)
             if (this.sling.length >= 30) {
                 this.sling.stiffness = 0.15
                 this.sling.length = 0.5;
@@ -65,7 +63,9 @@ class SlingShot {
         else if (this.sling.bodyB) {
             const posA = this.sling.pointA;
             const posB = this.sling.bodyB.position;
+
             if (Math.abs(posA.x - posB.x) >= 30 || Math.abs(posA.y - posB.y) >= 30) {
+
 
                 this.sling.stiffness = 1;
                 this.sling.length = 30;
@@ -132,7 +132,7 @@ function mouseReleased() {
 
                 }, 2500);
             }
-            else if (wormove[indexPlayingWorm].weapon.name = "Rocket") {
+            else if (wormove[indexPlayingWorm].weapon.name == "Contact Grenade") {
                 wormove[indexPlayingWorm].weapon.wasThrowed = true;
 
 
@@ -195,19 +195,14 @@ function mousePressed() {
                     if (isInside < 8) {
                         wormove[i].weapon.isInside = true;
                         buggyclick = false;
-
-
                     }
                     else {
-
                         buggyclick = true;
                         mouseUse = false;
                     }
-
                     break;
                 }
             }
-
         }
         else {
             if (wormove[i].weapon.bodyCreated == true) {

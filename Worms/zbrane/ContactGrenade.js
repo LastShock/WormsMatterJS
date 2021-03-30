@@ -54,15 +54,12 @@ class ContactGrenade {
         else if (this.throw == true && this.bodyCreated == false) {
             this.bodyCreated = true;
             this.bodyWeap = Matter.Bodies.circle(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 20, this.r / 2);
+            Matter.World.add(world, this.bodyWeap);
             this.bodyWeap.mass = 500;
             this.bodyWeap.restitution = 0.1;
             this.bodyWeap.friction = 1;
             this.bodyWeap.frictionStatic = 1;
-
-
-
-
-            Matter.World.add(world, this.bodyWeap);
+            this.bodyWeap.isSensor = true;
 
 
             this.mouse = Mouse.create(canvas.elt);
@@ -72,9 +69,9 @@ class ContactGrenade {
             this.mouse.pixelRatio = pixelDensity();
 
             this.mConstraint = MouseConstraint.create(engine, options);
-            this.slingshot = new SlingShot(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 46, this.bodyWeap, this.mouse, this.idWorm);
-
             World.add(world, this.mConstraint);
+
+            this.slingshot = new SlingShot(wormove[this.idWorm].body.position.x + 15, wormove[this.idWorm].body.position.y - 46, this.bodyWeap, this.mouse, this.idWorm);
 
 
 
@@ -136,14 +133,21 @@ class ContactGrenade {
         }
 
         if (this.checkTime(this.idWorm) && this.bodyCreated == true) {
-            if (this.inAir != true) {
-                Matter.Composite.remove(world, this.bodyWeap)
-                this.bodyCreated = false;
-                this.throw = false;
-                this.inAir = false;
+            if (this.wasThrowed == false) {
+                if (this.inAir != true) {
+                    Matter.Composite.remove(world, this.bodyWeap)
+                    this.bodyCreated = false;
+                    this.throw = false;
+                    this.inAir = false;
+                }
+                else {
+                    this.bodyCreated = false;
+                    this.throw = false;
+                    this.inAir = false;
+                }
+                wormove[this.idWorm].SwapWorm(this.idWorm);
             }
 
-            wormove[this.idWorm].SwapWorm(this.idWorm);
         }
     }
     showExplosion() {
@@ -156,8 +160,10 @@ class ContactGrenade {
 
         audioExplode.play();
 
+        this.wasThrowed = false;
         this.explosionX = this.bodyWeap.position.x;
         this.explosionY = this.bodyWeap.position.y;
+        this.slingshot = null;
         this.exploded = true;
 
 
@@ -172,9 +178,7 @@ class ContactGrenade {
         wormove[idWorm].weapon.bodyCreated = false;
         wormove[idWorm].weapon.throw = false;
         wormove[idWorm].weapon.inAir = false;
-        wormove[idWorm].SwapWorm(idWorm);
 
-        Matter.Composite.remove(world, wormove[idWorm].weapon.bodyWeap)
 
         let radius = 125;
         let dmgDone = false;
@@ -234,12 +238,12 @@ class ContactGrenade {
 
 
             }
-
+            Matter.Composite.remove(world, wormove[idWorm].weapon.bodyWeap);
+            wormove[idWorm].SwapWorm(idWorm);
 
         }
 
 
-        this.wasThrowed = false;
 
         this.didHit = false;
     }

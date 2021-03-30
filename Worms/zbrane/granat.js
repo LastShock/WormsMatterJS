@@ -156,16 +156,15 @@ class Granat {
         pop();
     }
     explode(idWorm) {
-        this.wasThrowed = false;
-
-        this.collidedWithWorm = false
-        this.slingshot = null;
 
         audioExplode.play();
 
-        this.exploded = true;
+        this.wasThrowed = false;
         this.explosionX = this.bodyWeap.position.x;
         this.explosionY = this.bodyWeap.position.y;
+        this.slingshot = null;
+        this.exploded = true;
+
 
         setTimeout(() => {
             this.exploded = false;

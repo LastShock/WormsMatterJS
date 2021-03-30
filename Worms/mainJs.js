@@ -191,7 +191,6 @@ function RestartAll() {
     pause1 = false;
 
 
-    speak = false;
 
 
     timeGranatStart = new Date();
